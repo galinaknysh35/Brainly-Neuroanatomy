@@ -1,0 +1,397 @@
+/**
+ * BRAINLY - MAIN STYLESHEET
+ * 
+ * Design Philosophy:
+ * - Clean, scientific aesthetic
+ * - Generous whitespace for focus
+ * - Subtle gradients and shadows
+ * - Professional typography
+ * - Accessible color contrasts
+ * 
+ * Learning Notes:
+ * 
+ * 1. CSS GRID:
+ *    - Modern layout system
+ *    - Better than floats or flexbox for page layouts
+ *    - Defines rows and columns explicitly
+ * 
+ * 2. CSS CUSTOM PROPERTIES (Variables):
+ *    - Define once, use everywhere
+ *    - Easy to maintain and theme
+ *    - --variable-name syntax
+ * 
+ * 3. RESPONSIVE DESIGN:
+ *    - @media queries adjust layout for different screen sizes
+ *    - Mobile-first approach (start small, scale up)
+ */
+
+/* ==================== IMPORTS ==================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+/* ==================== CSS VARIABLES ==================== */
+:root {
+  /* Colors */
+  --color-primary: #4A90E2;
+  --color-secondary: #E91E63;
+  --color-accent: #2ECC71;
+  
+  --color-dark: #1a1a1a;
+  --color-gray-900: #2d2d2d;
+  --color-gray-700: #666666;
+  --color-gray-500: #999999;
+  --color-gray-300: #cccccc;
+  --color-gray-100: #f5f5f5;
+  --color-white: #ffffff;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-xs: 11px;
+  --font-size-sm: 13px;
+  --font-size-base: 15px;
+  --font-size-lg: 18px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 32px;
+  
+  /* Layout */
+  --header-height: 70px;
+  --footer-height: 40px;
+  --sidebar-width: 320px;
+  
+  /* Effects */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+  --border-radius: 12px;
+  --transition-speed: 0.2s;
+}
+
+/* ==================== RESET & BASE ==================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  color: var(--color-dark);
+  background: var(--color-gray-100);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden; /* Prevent page scroll, let sections handle it */
+}
+
+/* ==================== LAYOUT ==================== */
+
+.app {
+  display: grid;
+  grid-template-rows: var(--header-height) 1fr var(--footer-height);
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ===== HEADER ===== */
+
+.header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  z-index: 100;
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-xl);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.logo-icon {
+  font-size: 32px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.logo-text {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: white;
+  letter-spacing: -0.5px;
+}
+
+.tagline {
+  color: rgba(255,255,255,0.9);
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  max-width: 400px;
+}
+
+/* ===== MAIN CONTENT AREA ===== */
+
+.main-content {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr var(--sidebar-width);
+  gap: 0;
+  overflow: hidden;
+  background: var(--color-gray-100);
+}
+
+/* ===== SIDEBARS ===== */
+
+.left-sidebar,
+.right-sidebar {
+  background: white;
+  overflow-y: auto;
+  box-shadow: var(--shadow-sm);
+}
+
+.left-sidebar {
+  border-right: 1px solid #e0e0e0;
+}
+
+.right-sidebar {
+  border-left: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sidebar Sections */
+.sidebar-section {
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.sidebar-title {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-gray-700);
+  margin-bottom: var(--spacing-md);
+}
+
+/* Info Cards */
+.info-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+.info-card {
+  background: linear-gradient(135deg, #667eea15, #764ba215);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius);
+  text-align: center;
+}
+
+.info-card-number {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  color: #667eea;
+  margin-bottom: var(--spacing-xs);
+}
+
+.info-card-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-700);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Tip Box */
+.tip-box {
+  background: #fff8e1;
+  border: 1px solid #ffe082;
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  color: #f57c00;
+}
+
+/* ===== VISUALIZATION AREA ===== */
+
+.visualization-area {
+  position: relative;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  overflow: hidden;
+}
+
+/* ===== VIEW TABS ===== */
+
+.view-tabs {
+  display: flex;
+  border-bottom: 2px solid var(--color-gray-100);
+  background: white;
+  flex-shrink: 0; /* Don't shrink when content overflows */
+}
+
+.view-tab {
+  flex: 1;
+  padding: var(--spacing-md);
+  border: none;
+  background: transparent;
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-gray-500);
+  cursor: pointer;
+  transition: all var(--transition-speed);
+  position: relative;
+}
+
+.view-tab:hover {
+  background: var(--color-gray-100);
+  color: var(--color-gray-900);
+}
+
+.view-tab.active {
+  color: var(--color-primary);
+}
+
+.view-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-primary);
+}
+
+/* View Content */
+.view-content {
+  flex: 1;
+  overflow-y: auto;
+  background: white;
+}
+
+/* ===== FOOTER ===== */
+
+.footer {
+  background: var(--color-dark);
+  color: var(--color-gray-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xs);
+  padding: 0 var(--spacing-xl);
+}
+
+.footer p {
+  margin: 0;
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+
+/* Tablet and below */
+@media (max-width: 1200px) {
+  :root {
+    --sidebar-width: 280px;
+  }
+  
+  .tagline {
+    display: none;
+  }
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .main-content {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+  
+  .left-sidebar {
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+    overflow-y: visible;
+    max-height: 200px;
+  }
+  
+  .right-sidebar {
+    border-left: none;
+    border-top: 1px solid #e0e0e0;
+    max-height: 300px;
+  }
+  
+  .visualization-area {
+    min-height: 400px;
+  }
+}
+
+/* ==================== SCROLLBARS ==================== */
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-gray-300);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-500);
+}
+
+/* ==================== ANIMATIONS ==================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sidebar-section {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ==================== UTILITIES ==================== */
+
+.text-center {
+  text-align: center;
+}
+
+.mt-1 { margin-top: var(--spacing-sm); }
+.mt-2 { margin-top: var(--spacing-md); }
+.mt-3 { margin-top: var(--spacing-lg); }
+
+.mb-1 { margin-bottom: var(--spacing-sm); }
+.mb-2 { margin-bottom: var(--spacing-md); }
+.mb-3 { margin-bottom: var(--spacing-lg); }
+
+.p-1 { padding: var(--spacing-sm); }
+.p-2 { padding: var(--spacing-md); }
+.p-3 { padding: var(--spacing-lg); }
