@@ -102,12 +102,7 @@ const InfoPanel = ({ selectedStructure, onClose }) => {
 
       {/* Coordinates section (for educational purposes) */}
       <div style={styles.section}>
-        <h3 style={styles.sectionTitle}>3D Position</h3>
-        <div style={styles.coordinates}>
-          <span style={styles.coordLabel}>X:</span> {selectedStructure.position[0].toFixed(1)} &nbsp;
-          <span style={styles.coordLabel}>Y:</span> {selectedStructure.position[1].toFixed(1)} &nbsp;
-          <span style={styles.coordLabel}>Z:</span> {selectedStructure.position[2].toFixed(1)}
-        </div>
+      
       </div>
     </div>
   );

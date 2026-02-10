@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import SketchfabBrain from './components/Brain3D/SketchfabBrain';
+import Brain3D from './components/Brain3D/Brain3D';
 import InfoPanel from './components/UI/InfoPanel';
 import NetworkSelector from './components/UI/NetworkSelector';
 import SearchBar from './components/UI/SearchBar';
@@ -10,79 +10,26 @@ import './App.css';
  * 
  * This is the root component that brings together all parts of Brainly.
  * It manages the global application state and layout.
- * 
- * LEARNING NOTES:
- * 
- * 1. APPLICATION ARCHITECTURE:
- *    - App component is the "single source of truth"
- *    - State flows DOWN to children via props
- *    - Events flow UP via callback functions
- *    - This is called "unidirectional data flow"
- * 
- * 2. LAYOUT STRATEGY:
- *    - CSS Grid for main layout
- *    - Responsive design principles
- *    - Sidebar for controls, main area for 3D view
- * 
- * 3. STATE MANAGEMENT:
- *    - selectedStructure: which structure the user clicked
- *    - activeNetwork: which functional network is being visualized
- *    - activeView: which UI panel to show (info vs networks)
- * 
- * 4. COMPONENT COMMUNICATION:
- *    - Parent (App) passes callbacks to children
- *    - Children call these callbacks when events happen
- *    - Parent updates state, triggering re-render
  */
 
 function App() {
   // ============= STATE MANAGEMENT =============
   
-  /**
-   * Which brain structure is currently selected
-   * Null when nothing is selected
-   */
   const [selectedStructure, setSelectedStructure] = useState(null);
-  
-  /**
-   * Which functional network is currently active
-   * Null when no network is selected
-   */
   const [activeNetwork, setActiveNetwork] = useState(null);
-  
-  /**
-   * Which view is shown in the right sidebar
-   * 'info' = structure details
-   * 'networks' = network selector
-   */
   const [activeView, setActiveView] = useState('info');
 
   // ============= EVENT HANDLERS =============
 
-  /**
-   * Called when user selects a structure (from 3D view or search)
-   */
   const handleStructureSelect = (structure) => {
     setSelectedStructure(structure);
-    setActiveView('info'); // Switch to info view to show details
-    
-    // Optional: clear active network when selecting individual structure
-    // setActiveNetwork(null);
+    setActiveView('info');
   };
 
-  /**
-   * Called when user selects a network
-   */
   const handleNetworkSelect = (networkId) => {
     setActiveNetwork(networkId);
-    
-    // Optional: clear selected structure when selecting network
-    // setSelectedStructure(null);
   };
 
-  /**
-   * Called when user clicks a view tab
-   */
   const handleViewChange = (view) => {
     setActiveView(view);
   };
@@ -133,6 +80,14 @@ function App() {
           </div>
 
           <div className="sidebar-section">
+            <h3 className="sidebar-title">About the Model</h3>
+            <div className="tip-box">
+              🎨 This is a realistic 3D brain model. 
+              Click on different parts to learn about their functions!
+            </div>
+          </div>
+
+          <div className="sidebar-section">
             <h3 className="sidebar-title">Learning Tip</h3>
             <div className="tip-box">
               💡 Start by exploring major lobes (Frontal, Parietal, Temporal, 
@@ -143,11 +98,10 @@ function App() {
 
         {/* CENTER - 3D Visualization */}
         <main className="visualization-area">
-          <SketchfabBrain
-  selectedStructure={selectedStructure}
-  activeNetwork={activeNetwork}
-  onStructureSelect={handleStructureSelect}
-/>
+          <Brain3D
+            onStructureSelect={handleStructureSelect}
+            activeNetwork={activeNetwork}
+          />
         </main>
 
         {/* RIGHT SIDEBAR - Information Display */}
@@ -189,6 +143,7 @@ function App() {
       <footer className="footer">
         <p>
           Based on Harvard–Oxford Brain Atlas | 
+          3D Brain Model | 
           Built with React & Three.js | 
           Educational Tool for Neuroscience Students
         </p>
