@@ -2,18 +2,17 @@ import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, Environment, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { useEffect, useRef, Suspense } from 'react';
+import { brainStructures, getStructureById } from '../../data/brainData';  // ← ADD THIS!
 
 function BrainModel({ selectedStructure, highlightedStructures, onStructureClick, networkColor }) {
-  // Load the GLB file
   const { scene } = useGLTF('/src/components/Brain3D/brain3.glb');
   const brainRef = useRef();
   const { camera, gl } = useThree();
 
-  // Raycaster for clicks
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
 
-  // CLICK HANDLER
+  // CLICK HANDLER - NOW LOOKS UP FULL STRUCTURE DATA
   useEffect(() => {
     const handleClick = (event) => {
       const rect = gl.domElement.getBoundingClientRect();
@@ -28,8 +27,37 @@ function BrainModel({ selectedStructure, highlightedStructures, onStructureClick
 
       if (intersects.length > 0) {
         const mesh = intersects[0].object;
-        console.log('Clicked mesh:', mesh.name);
-        onStructureClick({ id: mesh.name, name: mesh.name });
+        const meshName = mesh.name;
+        
+        console.log('🖱️ Clicked mesh:', meshName);
+
+        // LOOK UP THE FULL STRUCTURE FROM brainData.js
+        let matchedStructure = getStructureById(meshName);
+
+        // Try case-insensitive match if exact match fails
+        if (!matchedStructure) {
+          matchedStructure = brainStructures.find(s => 
+            s.id.toLowerCase() === meshName.toLowerCase() ||
+            s.name.toLowerCase() === meshName.toLowerCase()
+          );
+        }
+
+        if (matchedStructure) {
+          console.log('✅ Matched structure:', matchedStructure.name);
+          console.log('📝 Function:', matchedStructure.function);
+          onStructureClick(matchedStructure);
+        } else {
+          console.log('❌ No match found for:', meshName);
+          console.log('Available IDs:', brainStructures.map(s => s.id));
+          // Create temporary structure for unmapped meshes
+          onStructureClick({
+            id: meshName,
+            name: meshName,
+            region: 'Unknown',
+            function: `This structure ("${meshName}") is not yet mapped in the brain atlas. The mesh was clicked but no matching data was found.`,
+            color: '#888888'
+          });
+        }
       }
     };
 
@@ -45,7 +73,6 @@ function BrainModel({ selectedStructure, highlightedStructures, onStructureClick
       if (child.isMesh) {
         const name = child.name;
 
-        // Clone material so each mesh has its own
         if (!child.material.userData.originalMaterial) {
           child.material = child.material.clone();
           child.material.userData.originalMaterial = true;
@@ -68,10 +95,24 @@ function BrainModel({ selectedStructure, highlightedStructures, onStructureClick
     });
   }, [selectedStructure, highlightedStructures, networkColor]);
 
+  // DEBUG: Log all mesh names when model loads
+  useEffect(() => {
+    if (brainRef.current) {
+      console.log('🧠 === BRAIN MODEL LOADED ===');
+      console.log('📋 Mesh names in GLB:');
+      brainRef.current.traverse((child) => {
+        if (child.isMesh) {
+          console.log('  -', child.name);
+        }
+      });
+      console.log('📚 Structure IDs in brainData.js:');
+      brainStructures.forEach(s => console.log('  -', s.id));
+    }
+  }, []);
+
   return <primitive ref={brainRef} object={scene} scale={1.5} />;
 }
 
-// Loading fallback
 function LoadingBrain() {
   return (
     <mesh>
@@ -98,7 +139,7 @@ const Scene = ({
     >
       <PerspectiveCamera 
         makeDefault 
-        position={[8, 1, 8]} 
+        position={[8, 1, 400]} 
         fov={50} 
         near={0.1} 
         far={1000} 
@@ -107,12 +148,11 @@ const Scene = ({
       <OrbitControls 
         enableDamping 
         dampingFactor={0.05} 
-        minDistance={317} 
-        maxDistance={30} 
-        target={[0, 32, 0]} 
+        minDistance={200} 
+        maxDistance={500} 
+        target={[0, 55, 0]} 
       />
 
-      {/* Lights */}
       <ambientLight intensity={0.4} color="#ffffff" />
       <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
       <directionalLight position={[-5, 5, -5]} intensity={0.3} color="#b8d4ff" />
@@ -122,7 +162,6 @@ const Scene = ({
 
       <Environment preset="city" />
 
-      {/* Load the brain model with Suspense for loading state */}
       <Suspense fallback={<LoadingBrain />}>
         <BrainModel
           selectedStructure={selectedStructure?.id}

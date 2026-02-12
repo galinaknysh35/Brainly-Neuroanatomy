@@ -1,243 +1,131 @@
 /**
- * BRAIN STRUCTURES DATA
- * 
- * This file contains anatomical data for major brain structures based on the Harvard-Oxford Brain Atlas.
- * Each structure includes:
- * - id: Unique identifier
- * - name: Anatomical name
- * - position: 3D coordinates [x, y, z] in brain space
- * - size: Approximate dimensions [width, height, depth]
- * - function: What this structure does
- * - network: Which functional networks it participates in
- * - color: Default color for visualization
- * 
- * COORDINATE SYSTEM:
- * - X axis: Left (-) to Right (+)
- * - Y axis: Bottom (-) to Top (+)
- * - Z axis: Back (-) to Front (+)
+ * BRAIN STRUCTURES DATA - Updated for GLB Model
  */
 
 export const brainStructures = [
-  // FRONTAL LOBE STRUCTURES
+  // CEREBRAL LOBES
   {
-    id: 'prefrontal-cortex',
-    name: 'Prefrontal Cortex',
-    region: 'Frontal Lobe',
-    position: [0, 1.5, 2.5],
-    size: [3, 1.5, 1.5],
-    function: 'Executive functions including decision-making, planning, working memory, and impulse control. Often called the "CEO of the brain."',
-    networks: ['executive-control', 'default-mode'],
-    color: '#4A90E2'
+    id: 'Frontal_Lobe',
+    name: 'Frontal Lobe',
+    region: 'Cerebrum',
+    function: 'The frontal lobe is responsible for executive functions including reasoning, planning, problem-solving, decision-making, and controlling behavior and emotions. It contains the primary motor cortex (controlling voluntary movement) and areas critical for speech production (Broca\'s area). This lobe is what makes humans capable of complex thought, personality expression, and voluntary movement control.',
+    networks: ['executive-control', 'motor', 'language'],
+    color: '#4A90E2',
+    clinicalSignificance: 'Damage can cause personality changes, difficulty with planning, impulsive behavior, or motor deficits. Famous case: Phineas Gage.'
   },
   {
-    id: 'motor-cortex',
-    name: 'Primary Motor Cortex',
-    region: 'Frontal Lobe',
-    position: [0, 2, 0.5],
-    size: [3.5, 0.8, 1],
-    function: 'Controls voluntary movement of muscles throughout the body. Organized somatotopically (body map).',
-    networks: ['motor'],
-    color: '#E94B3C'
+    id: 'Parietal_Lobe',
+    name: 'Parietal Lobe',
+    region: 'Cerebrum',
+    function: 'The parietal lobe processes sensory information from the body including touch, temperature, pain, and spatial awareness. It contains the primary somatosensory cortex and is crucial for integrating sensory input with motor output. This lobe helps you understand where your body is in space and process mathematical and spatial reasoning.',
+    networks: ['sensory', 'attention', 'spatial'],
+    color: '#E67E22',
+    clinicalSignificance: 'Damage can cause difficulty with spatial awareness, problems with reading or math, or neglect syndrome (ignoring one side of space).'
   },
   {
-    id: 'premotor-cortex',
-    name: 'Premotor Cortex',
-    region: 'Frontal Lobe',
-    position: [0, 1.8, 1.2],
-    size: [3, 0.8, 0.8],
-    function: 'Plans and prepares movements, integrates sensory information for motor control.',
-    networks: ['motor'],
-    color: '#F08080'
+    id: 'Temporal_Lobe',
+    name: 'Temporal Lobe',
+    region: 'Cerebrum',
+    function: 'The temporal lobe is essential for processing auditory information, language comprehension, memory formation, and emotion. It contains the primary auditory cortex, Wernicke\'s area (language understanding), and the hippocampus (memory formation). This lobe helps you understand speech, recognize faces, form new memories, and process emotions.',
+    networks: ['auditory', 'language', 'memory', 'emotion'],
+    color: '#27AE60',
+    clinicalSignificance: 'Damage can cause memory loss (especially hippocampal damage), difficulty understanding speech, or problems recognizing faces (prosopagnosia). Heavily affected in Alzheimer\'s disease.'
   },
   {
-    id: 'brocas-area',
-    name: "Broca's Area",
-    region: 'Frontal Lobe',
-    position: [-1.8, 0.8, 1.8],
-    size: [0.8, 0.7, 0.7],
-    function: 'Speech production and language processing. Damage causes expressive aphasia.',
-    networks: ['language'],
-    color: '#9B59B6'
-  },
-
-  // PARIETAL LOBE STRUCTURES
-  {
-    id: 'somatosensory-cortex',
-    name: 'Primary Somatosensory Cortex',
-    region: 'Parietal Lobe',
-    position: [0, 2, -0.5],
-    size: [3.5, 0.8, 1],
-    function: 'Processes touch, temperature, pain, and proprioception from the body. Organized somatotopically.',
-    networks: ['sensory'],
-    color: '#F39C12'
-  },
-  {
-    id: 'posterior-parietal',
-    name: 'Posterior Parietal Cortex',
-    region: 'Parietal Lobe',
-    position: [0, 1.5, -1.5],
-    size: [3, 1.2, 1],
-    function: 'Spatial awareness, attention, and sensorimotor integration. Critical for reaching and grasping.',
-    networks: ['attention', 'sensory'],
-    color: '#E67E22'
-  },
-
-  // TEMPORAL LOBE STRUCTURES
-  {
-    id: 'auditory-cortex',
-    name: 'Primary Auditory Cortex',
-    region: 'Temporal Lobe',
-    position: [-2.2, -0.5, 0],
-    size: [0.8, 1, 0.8],
-    function: 'Processes auditory information and sound perception.',
-    networks: ['auditory'],
-    color: '#1ABC9C'
-  },
-  {
-    id: 'wernickes-area',
-    name: "Wernicke's Area",
-    region: 'Temporal Lobe',
-    position: [-2.5, -0.3, -0.5],
-    size: [1, 0.8, 0.8],
-    function: 'Language comprehension and understanding. Damage causes receptive aphasia.',
-    networks: ['language'],
-    color: '#8E44AD'
-  },
-  {
-    id: 'hippocampus',
-    name: 'Hippocampus',
-    region: 'Temporal Lobe (Medial)',
-    position: [-1.5, -1, -0.5],
-    size: [0.6, 0.4, 1.2],
-    function: 'Critical for forming new memories and spatial navigation. Heavily affected in Alzheimer\'s disease.',
-    networks: ['default-mode', 'memory'],
-    color: '#27AE60'
-  },
-  {
-    id: 'amygdala',
-    name: 'Amygdala',
-    region: 'Temporal Lobe (Medial)',
-    position: [-1.2, -0.8, 0.8],
-    size: [0.5, 0.5, 0.5],
-    function: 'Processes emotions, especially fear and threat detection. Part of the limbic system.',
-    networks: ['salience', 'emotion'],
-    color: '#E74C3C'
-  },
-
-  // OCCIPITAL LOBE STRUCTURES
-  {
-    id: 'visual-cortex',
-    name: 'Primary Visual Cortex (V1)',
-    region: 'Occipital Lobe',
-    position: [0, 0.5, -3],
-    size: [2.5, 1.5, 0.8],
-    function: 'Processes basic visual information like edges, orientation, and movement. First cortical area to receive visual input.',
+    id: 'Occipital_Lobe',
+    name: 'Occipital Lobe',
+    region: 'Cerebrum',
+    function: 'The occipital lobe is dedicated to processing visual information. It contains the primary visual cortex (V1) which receives input directly from the eyes via the optic nerves. This lobe processes basic visual features like edges, colors, and motion, then sends information to other brain areas for higher-level visual processing like object and face recognition.',
     networks: ['visual'],
-    color: '#3498DB'
+    color: '#3498DB',
+    clinicalSignificance: 'Damage can cause partial or complete blindness, visual hallucinations, or inability to recognize objects despite intact eyes (visual agnosia).'
   },
 
-  // SUBCORTICAL STRUCTURES
+  // CEREBELLUM
   {
-    id: 'thalamus',
-    name: 'Thalamus',
-    region: 'Diencephalon',
-    position: [0, 0, 0],
-    size: [1.2, 1, 1.5],
-    function: 'Relay station for sensory and motor signals to the cortex. Also regulates consciousness and sleep.',
-    networks: ['attention', 'sensory'],
-    color: '#95A5A6'
-  },
-  {
-    id: 'hypothalamus',
-    name: 'Hypothalamus',
-    region: 'Diencephalon',
-    position: [0, -0.8, 0.5],
-    size: [0.8, 0.6, 0.6],
-    function: 'Regulates homeostasis: hunger, thirst, body temperature, circadian rhythms, and hormone release.',
-    networks: ['autonomic'],
-    color: '#E67E22'
-  },
-  {
-    id: 'basal-ganglia',
-    name: 'Basal Ganglia',
-    region: 'Subcortical',
-    position: [-1, 0, 0.3],
-    size: [1.5, 1.2, 1],
-    function: 'Motor control, procedural learning, habit formation, and reward processing. Affected in Parkinson\'s disease.',
-    networks: ['motor', 'executive-control'],
-    color: '#C0392B'
-  },
-  {
-    id: 'cerebellum',
-    name: 'Cerebellum',
+    id: 'Corpus_Cerebelli',
+    name: 'Cerebellum (Corpus Cerebelli)',
     region: 'Hindbrain',
-    position: [0, -1.5, -2],
-    size: [3, 1.5, 1.5],
-    function: 'Coordinates movement, balance, and posture. Also involved in motor learning and some cognitive functions.',
-    networks: ['motor'],
-    color: '#16A085'
-  },
-  {
-    id: 'brainstem',
-    name: 'Brainstem',
-    region: 'Hindbrain',
-    position: [0, -2, -0.5],
-    size: [1, 1.5, 1],
-    function: 'Controls vital functions: breathing, heart rate, consciousness. Connects brain to spinal cord.',
-    networks: ['autonomic'],
-    color: '#7F8C8D'
+    function: 'The cerebellum (Latin for "little brain") coordinates voluntary movements, balance, posture, and motor learning. Despite being only 10% of brain volume, it contains over 50% of the brain\'s neurons. It fine-tunes motor commands from the cerebral cortex, ensuring smooth and accurate movements. Also involved in cognitive functions like attention and language processing.',
+    networks: ['motor', 'coordination', 'balance'],
+    color: '#16A085',
+    clinicalSignificance: 'Damage causes ataxia (loss of coordination), tremors, difficulty with precise movements, and problems with balance. Can also affect cognitive and emotional processing.'
   },
 
-  // ADDITIONAL IMPORTANT STRUCTURES
+  // BRAINSTEM STRUCTURES
   {
-    id: 'anterior-cingulate',
-    name: 'Anterior Cingulate Cortex',
-    region: 'Limbic System',
-    position: [0, 0.5, 1],
-    size: [1.2, 0.6, 1.5],
-    function: 'Error detection, conflict monitoring, emotional regulation, and pain processing.',
-    networks: ['salience', 'executive-control'],
-    color: '#D35400'
+    id: 'pons',
+    name: 'Pons',
+    region: 'Brainstem',
+    function: 'The pons (Latin for "bridge") connects the cerebral cortex with the cerebellum and medulla. It plays a crucial role in regulating breathing, sleep-wake cycles, bladder control, hearing, equilibrium, taste, eye movement, facial expressions, and posture. Contains nuclei for several cranial nerves and serves as a relay station for information traveling between different brain regions.',
+    networks: ['autonomic', 'sleep-wake', 'sensory-motor'],
+    color: '#95A5A6',
+    clinicalSignificance: 'Damage can cause breathing problems, sleep disorders, difficulty with eye movements, facial paralysis, or loss of sensation. Locked-in syndrome can result from pontine strokes.'
   },
   {
-    id: 'posterior-cingulate',
-    name: 'Posterior Cingulate Cortex',
-    region: 'Limbic System',
-    position: [0, 0.3, -1],
-    size: [1.2, 0.6, 1],
-    function: 'Default mode processing, self-referential thought, memory retrieval, and spatial awareness.',
-    networks: ['default-mode'],
-    color: '#2ECC71'
+    id: 'medullary_olive_',
+    name: 'Medullary Olive (Inferior Olivary Nucleus)',
+    region: 'Medulla Oblongata',
+    function: 'The inferior olivary nucleus appears as an olive-shaped swelling on the medulla. It is a major source of input to the cerebellum and plays a crucial role in motor learning, timing of movements, and coordination. It helps the cerebellum learn and fine-tune motor skills through practice. Also involved in detecting timing errors during movement.',
+    networks: ['motor-learning', 'cerebellar'],
+    color: '#D35400',
+    clinicalSignificance: 'Damage can cause palatal myoclonus (rhythmic movements of the soft palate), difficulty with motor learning, and coordination problems. Lesions may produce distinctive tremors.'
+  },
+
+  // VISUAL PATHWAY STRUCTURES
+  {
+    id: 'optic_nerve',
+    name: 'Optic Nerve (CN II)',
+    region: 'Cranial Nerve / Visual Pathway',
+    function: 'The optic nerve (cranial nerve II) transmits visual information from the retina to the brain. Each optic nerve contains about 1 million nerve fibers from retinal ganglion cells. It carries all visual input from one eye, converting light detected by photoreceptors into electrical signals that the brain can interpret. Despite being called a "nerve," it is technically part of the central nervous system.',
+    networks: ['visual'],
+    color: '#9B59B6',
+    clinicalSignificance: 'Damage causes vision loss in the affected eye. Conditions include optic neuritis (often in MS), glaucoma (increased pressure damaging the nerve), and optic nerve atrophy. Can be assessed by checking visual acuity and visual fields.'
   },
   {
-    id: 'insula',
-    name: 'Insular Cortex',
-    region: 'Deep Cortex',
-    position: [-1.8, 0, 0],
-    size: [0.8, 1.2, 1],
-    function: 'Interoception (internal body awareness), emotion, empathy, and taste processing.',
-    networks: ['salience'],
-    color: '#E91E63'
+    id: 'optic_chiasm_',
+    name: 'Optic Chiasm',
+    region: 'Visual Pathway',
+    function: 'The optic chiasm is the X-shaped crossover point where the optic nerves from both eyes meet. Here, nerve fibers from the nasal (inner) half of each retina cross to the opposite side of the brain, while fibers from the temporal (outer) half stay on the same side. This arrangement allows each hemisphere of the brain to receive information from both eyes about the opposite visual field, enabling binocular vision and depth perception.',
+    networks: ['visual'],
+    color: '#8E44AD',
+    clinicalSignificance: 'Tumors (often pituitary) pressing on the chiasm cause bitemporal hemianopia (loss of peripheral vision in both eyes). Damage pattern depends on exact location of lesion.'
+  },
+  {
+    id: 'optic_tract',
+    name: 'Optic Tract',
+    region: 'Visual Pathway',
+    function: 'The optic tract carries visual information from the optic chiasm to the brain. After the chiasm, fibers travel as the optic tract to several destinations: the lateral geniculate nucleus (LGN) of the thalamus (main visual pathway to cortex), the superior colliculus (eye movements and reflexes), and the pretectal area (pupillary light reflex). Each optic tract carries information from the opposite visual field from both eyes.',
+    networks: ['visual'],
+    color: '#6C3483',
+    clinicalSignificance: 'Damage causes homonymous hemianopia (loss of same side of visual field in both eyes). Right tract damage = left visual field loss in both eyes, and vice versa.'
   }
 ];
 
-/**
- * Helper function to get structure by ID
- */
+// Helper functions
 export const getStructureById = (id) => {
   return brainStructures.find(structure => structure.id === id);
 };
 
-/**
- * Helper function to get structures by region
- */
+export const getStructureByName = (name) => {
+  return brainStructures.find(structure => 
+    structure.name.toLowerCase() === name.toLowerCase()
+  );
+};
+
 export const getStructuresByRegion = (region) => {
   return brainStructures.filter(structure => structure.region === region);
 };
 
-/**
- * Helper function to get all unique regions
- */
 export const getAllRegions = () => {
   return [...new Set(brainStructures.map(s => s.region))];
+};
+
+export const searchStructures = (keyword) => {
+  const lowerKeyword = keyword.toLowerCase();
+  return brainStructures.filter(structure =>
+    structure.name.toLowerCase().includes(lowerKeyword) ||
+    structure.region.toLowerCase().includes(lowerKeyword) ||
+    structure.function.toLowerCase().includes(lowerKeyword)
+  );
 };
