@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Scene from './Scene';
-import { brainStructures } from '../../data/brainData';
 import { getStructuresInNetwork, getNetworkById } from '../../data/networkData';
 
 const Brain3D = ({ 
   onStructureSelect,
-  activeNetwork
+  activeNetwork,
+  selectedStructure  // ← Receive from parent (App)
 }) => {
-  const [selectedStructure, setSelectedStructure] = useState(null);
   const [highlightedStructures, setHighlightedStructures] = useState([]);
 
+  // Update highlights when network changes
   useEffect(() => {
     if (activeNetwork) {
       const structureIds = getStructuresInNetwork(activeNetwork);
@@ -19,8 +19,10 @@ const Brain3D = ({
     }
   }, [activeNetwork]);
 
+  // Handle structure click from 3D model
   const handleStructureClick = (structure) => {
-    setSelectedStructure(structure);
+    console.log('🔍 Brain3D - handleStructureClick:', structure);
+    // Just notify parent - let parent manage the state
     if (onStructureSelect) {
       onStructureSelect(structure);
     }
@@ -29,6 +31,8 @@ const Brain3D = ({
   const networkColor = activeNetwork 
     ? getNetworkById(activeNetwork)?.color 
     : null;
+
+  console.log('🎨 Brain3D render - selectedStructure from parent:', selectedStructure);
 
   return (
     <div style={{ 
@@ -42,6 +46,29 @@ const Brain3D = ({
         onStructureClick={handleStructureClick}
         networkColor={networkColor}
       />
+      
+      <div style={{
+        position: 'absolute',
+        bottom: '20px',
+        left: '20px',
+        color: 'white',
+        fontSize: '14px',
+        background: 'rgba(0,0,0,0.5)',
+        padding: '10px 15px',
+        borderRadius: '8px',
+        fontFamily: 'Inter, sans-serif',
+        backdropFilter: 'blur(10px)'
+      }}>
+        <div style={{ marginBottom: '5px', fontWeight: '600' }}>
+          🖱️ Controls:
+        </div>
+        <div style={{ fontSize: '12px', lineHeight: '1.6' }}>
+          • <strong>Left Click + Drag:</strong> Rotate<br/>
+          • <strong>Right Click + Drag:</strong> Pan<br/>
+          • <strong>Scroll:</strong> Zoom<br/>
+          • <strong>Click Brain:</strong> View Info
+        </div>
+      </div>
     </div>
   );
 };

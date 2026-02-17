@@ -1,37 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { brainStructures } from '../../data/brainData';
 
-/**
- * SearchBar Component
- * 
- * Provides search functionality to quickly find brain structures.
- * Filters results as user types and displays matches.
- * 
- * LEARNING NOTES:
- * 
- * 1. REAL-TIME FILTERING:
- *    - Filter array as user types
- *    - Case-insensitive search
- *    - Search across multiple fields (name, region, function)
- * 
- * 2. useEffect HOOK:
- *    - Runs side effects when dependencies change
- *    - Here: filter structures when search query changes
- * 
- * 3. DEBOUNCING (Future Enhancement):
- *    - Could add delay before filtering for performance
- *    - Useful with large datasets
- */
-
 const SearchBar = ({ onStructureSelect }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
 
-  /**
-   * Filter structures based on search query
-   * Runs whenever searchQuery changes
-   */
+  // Normalize function - handles spaces, underscores, case
+  const normalize = (str) => {
+    return str.replace(/_/g, ' ').toLowerCase().trim();
+  };
+
   useEffect(() => {
     if (searchQuery.trim() === '') {
       setSearchResults([]);
@@ -41,34 +20,30 @@ const SearchBar = ({ onStructureSelect }) => {
 
     setIsSearching(true);
 
-    // Convert query to lowercase for case-insensitive search
-    const query = searchQuery.toLowerCase();
+    const query = normalize(searchQuery);
 
     // Filter structures that match the query
     const results = brainStructures.filter((structure) => {
-      return (
-        structure.name.toLowerCase().includes(query) ||
-        structure.region.toLowerCase().includes(query) ||
-        structure.function.toLowerCase().includes(query)
-      );
+      const nameMatch = normalize(structure.name).includes(query);
+      const idMatch = normalize(structure.id).includes(query);
+      const regionMatch = normalize(structure.region).includes(query);
+      const functionMatch = normalize(structure.function).includes(query);
+      
+      return nameMatch || idMatch || regionMatch || functionMatch;
     });
 
+    console.log('🔍 Search results for:', searchQuery, '→', results.length, 'matches');
     setSearchResults(results);
   }, [searchQuery]);
 
-  /**
-   * Handle result selection
-   */
   const handleResultClick = (structure) => {
+    console.log('🔍 SearchBar: Selected structure:', structure);
     onStructureSelect(structure);
-    setSearchQuery(''); // Clear search after selection
+    setSearchQuery('');
     setSearchResults([]);
     setIsSearching(false);
   };
 
-  /**
-   * Clear search
-   */
   const handleClear = () => {
     setSearchQuery('');
     setSearchResults([]);
@@ -77,7 +52,6 @@ const SearchBar = ({ onStructureSelect }) => {
 
   return (
     <div style={styles.container}>
-      {/* Search Input */}
       <div style={styles.searchBox}>
         <span style={styles.searchIcon}>🔍</span>
         <input
@@ -97,7 +71,6 @@ const SearchBar = ({ onStructureSelect }) => {
         )}
       </div>
 
-      {/* Search Results Dropdown */}
       {isSearching && (
         <div style={styles.resultsContainer}>
           {searchResults.length > 0 ? (
@@ -118,13 +91,11 @@ const SearchBar = ({ onStructureSelect }) => {
                       e.currentTarget.style.background = 'white';
                     }}
                   >
-                    {/* Color indicator */}
                     <div style={{
                       ...styles.resultColor,
                       background: structure.color
                     }} />
                     
-                    {/* Structure info */}
                     <div style={styles.resultInfo}>
                       <div style={styles.resultName}>{structure.name}</div>
                       <div style={styles.resultRegion}>{structure.region}</div>

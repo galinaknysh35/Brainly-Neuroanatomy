@@ -107,10 +107,10 @@ export const functionalNetworks = [
     name: 'Language Network',
     description: 'Processes language comprehension and production. Includes both Broca\'s and Wernicke\'s areas.',
     structures: [
-      'brocas-area',
-      'wernickes-area'
+      'Brocas_Area',
+      'Wernickes_Area'
     ],
-    color: '#9B59B6',
+    color: '#40d440',
     discoveredBy: 'Paul Broca (1861) and Carl Wernicke (1874)',
     clinicalRelevance: 'Damage causes aphasia (language impairment)'
   },

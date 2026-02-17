@@ -4,8 +4,9 @@ import * as THREE from 'three';
 import { useEffect, useRef, Suspense } from 'react';
 import { brainStructures, getStructureById } from '../../data/brainData';  // ← ADD THIS!
 
+
 function BrainModel({ selectedStructure, highlightedStructures, onStructureClick, networkColor }) {
-  const { scene } = useGLTF('/src/components/Brain3D/brain3.glb');
+  const { scene } = useGLTF('/src/components/Brain3D/brain4 .glb');
   const brainRef = useRef();
   const { camera, gl } = useThree();
 
@@ -20,6 +21,7 @@ function BrainModel({ selectedStructure, highlightedStructures, onStructureClick
       mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
       raycaster.setFromCamera(mouse, camera);
+      
 
       if (!brainRef.current) return;
 
@@ -65,35 +67,140 @@ function BrainModel({ selectedStructure, highlightedStructures, onStructureClick
     return () => gl.domElement.removeEventListener('click', handleClick);
   }, [camera, gl, onStructureClick]);
 
-  // HIGHLIGHTING LOGIC
-  useEffect(() => {
-    if (!brainRef.current) return;
+  // ADD THIS NEW useEffect - Initial color setup
+useEffect(() => {
+  if (!brainRef.current) return;
 
+  console.log('🎨 Setting initial pink colors');
+  
+  brainRef.current.traverse((child) => {
+    if (child.isMesh) {
+      // Clone material
+      if (!child.material.userData.originalMaterial) {
+        child.material = child.material.clone();
+        child.material.userData.originalMaterial = true;
+      }
+      
+      // Set initial pink color
+      child.material.color.set('#e864be');
+      child.material.emissive.set('#060606');
+      child.material.emissiveIntensity = 0.1;
+      child.material.transparent = false;
+      child.material.opacity = 0.7;
+      child.material.needsUpdate = true;
+    }
+  });
+}, []); // Run once when component mounts
+
+  // HIGHLIGHTING LOGIC - With Better ID Extraction
+useEffect(() => {
+  console.log('🔥 HIGHLIGHTING EFFECT TRIGGERED');
+  console.log('🔥 selectedStructure:', selectedStructure);
+  console.log('🔥 selectedStructure type:', typeof selectedStructure);
+  
+  if (!brainRef.current) {
+    console.log('❌ brainRef.current is null');
+    return;
+  }
+
+  // Extract ID from selectedStructure (could be object or string)
+  const selectedId = typeof selectedStructure === 'object' 
+    ? selectedStructure?.id 
+    : selectedStructure;
+  
+    console.log('🔥 Extracted selectedId:', selectedId);
+
+  if (!selectedId) {
+    console.log('❌ No selectedId, skipping highlighting');
+    return;
+  }
+
+  if (!selectedId) {
+    console.log('🎨 No structure selected');
+    // Reset all to default
     brainRef.current.traverse((child) => {
       if (child.isMesh) {
-        const name = child.name;
-
         if (!child.material.userData.originalMaterial) {
           child.material = child.material.clone();
           child.material.userData.originalMaterial = true;
         }
-
-        if (highlightedStructures.includes(name)) {
-          child.material.color.set(networkColor || '#FFD700');
-          child.material.emissive.set(networkColor || '#FFD700');
-          child.material.emissiveIntensity = 0.3;
-        } else if (selectedStructure === name) {
-          child.material.color.set('#ffffff');
-          child.material.emissive.set('#ffffff');
-          child.material.emissiveIntensity = 0.5;
-        } else {
-          child.material.color.set('#cccccc');
-          child.material.emissive.set('#000000');
-          child.material.emissiveIntensity = 0;
-        }
+        child.material.color.set('#e864be');
+        child.material.emissive.set('#000000');
+        child.material.emissiveIntensity = 0;
+        child.material.needsUpdate = true;
       }
     });
-  }, [selectedStructure, highlightedStructures, networkColor]);
+    return;
+  }
+  
+  // Get the selected structure data
+  const selectedData = brainStructures.find(s => s.id === selectedId);
+  console.log('🔥 Found selectedData:', selectedData?.name);
+
+  // Build list of all IDs that should be highlighted as "selected"
+  const idsToHighlight = [selectedId];
+  if (selectedData?.relatedStructures) {
+    idsToHighlight.push(...selectedData.relatedStructures);
+  }
+
+  console.log('🔥 IDs to highlight:', idsToHighlight);
+
+  console.log('🎨 Highlighting update:', {
+    selectedStructure,
+    selectedId,
+    selectedData: selectedData?.name,
+    relatedStructures: selectedData?.relatedStructures,
+    idsToHighlight,
+    highlightedStructures
+  });
+
+  // Function to apply material to a mesh and ALL its children
+  const applyMaterialToMeshAndChildren = (object, color, emissive, intensity) => {
+    if (object.isMesh) {
+      if (!object.material.userData.originalMaterial) {
+        object.material = object.material.clone();
+        object.material.userData.originalMaterial = true;
+      }
+
+      object.material.color.set(color);
+      object.material.emissive.set(emissive);
+      object.material.emissiveIntensity = intensity;
+      object.material.needsUpdate = true;
+    }
+
+    object.children.forEach(child => {
+      applyMaterialToMeshAndChildren(child, color, emissive, intensity);
+    });
+  };
+
+  // Traverse the entire brain model
+  brainRef.current.traverse((child) => {
+    const meshName = child.name;
+
+    const isSelected = idsToHighlight.includes(meshName);
+    const isHighlighted = highlightedStructures.includes(meshName);
+
+    if (isSelected) {
+      console.log(`  ✅ SELECTING: ${meshName}`);
+      applyMaterialToMeshAndChildren(child, '#0080ff', '#0080ff', 0.5);
+    } else if (isHighlighted) {
+      console.log(`  ✨ HIGHLIGHTING: ${meshName}`);
+      applyMaterialToMeshAndChildren(child, networkColor || '#FFD700', networkColor || '#FFD700', 0.3);
+    } else if (child.isMesh) {
+      if (!child.material.userData.originalMaterial) {
+        child.material = child.material.clone();
+        child.material.userData.originalMaterial = true;
+      }
+      child.material.color.set('#ef59bf');
+      child.material.emissive.set('#e857bc');
+      child.material.emissiveIntensity = 0;
+      child.material.needsUpdate = true;
+    }
+  });
+}, [selectedStructure, highlightedStructures, networkColor]);
+
+
+
 
   // DEBUG: Log all mesh names when model loads
   useEffect(() => {
@@ -110,7 +217,7 @@ function BrainModel({ selectedStructure, highlightedStructures, onStructureClick
     }
   }, []);
 
-  return <primitive ref={brainRef} object={scene} scale={1.5} />;
+  return <primitive ref={brainRef} object={scene} scale={1.5} rotation={[0,Math.PI / 2,0]}/>;
 }
 
 function LoadingBrain() {
@@ -128,6 +235,11 @@ const Scene = ({
   onStructureClick,
   networkColor
 }) => {
+  console.log('🎬 Scene received:', {
+    selectedStructure,
+    selectedStructureType: typeof selectedStructure,
+    selectedStructureId: selectedStructure?.id
+  });
   return (
     <Canvas
       style={{
@@ -150,7 +262,7 @@ const Scene = ({
         dampingFactor={0.05} 
         minDistance={200} 
         maxDistance={500} 
-        target={[0, 55, 0]} 
+        target={[10, 55, 0]} 
       />
 
       <ambientLight intensity={0.4} color="#ffffff" />
@@ -164,7 +276,7 @@ const Scene = ({
 
       <Suspense fallback={<LoadingBrain />}>
         <BrainModel
-          selectedStructure={selectedStructure?.id}
+          selectedStructure={selectedStructure}
           highlightedStructures={highlightedStructures}
           onStructureClick={onStructureClick}
           networkColor={networkColor}

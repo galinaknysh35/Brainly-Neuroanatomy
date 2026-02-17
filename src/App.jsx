@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import Brain3D from './components/Brain3D/Brain3D';
 import InfoPanel from './components/UI/InfoPanel';
 import NetworkSelector from './components/UI/NetworkSelector';
 import SearchBar from './components/UI/SearchBar';
+import handleSickSalmon from './components/sicksalmon';
 import './App.css';
 
 /**
@@ -22,9 +23,11 @@ function App() {
   // ============= EVENT HANDLERS =============
 
   const handleStructureSelect = (structure) => {
+    console.log('📱 App - handleStructureSelect called with:', structure);
     setSelectedStructure(structure);
     setActiveView('info');
   };
+  
 
   const handleNetworkSelect = (networkId) => {
     setActiveNetwork(networkId);
@@ -33,6 +36,12 @@ function App() {
   const handleViewChange = (view) => {
     setActiveView(view);
   };
+
+  // Add useEffect to watch selectedStructure changes
+useEffect(() => {
+  console.log('📱 App - selectedStructure changed to:', selectedStructure);
+}, [selectedStructure]);
+
 
   // ============= RENDER =============
 
@@ -101,6 +110,7 @@ function App() {
           <Brain3D
             onStructureSelect={handleStructureSelect}
             activeNetwork={activeNetwork}
+            selectedStructure={selectedStructure}
           />
         </main>
 
@@ -147,6 +157,7 @@ function App() {
           Built with React & Three.js | 
           Educational Tool for Neuroscience Students
         </p>
+
       </footer>
     </div>
   );

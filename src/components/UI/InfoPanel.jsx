@@ -35,7 +35,7 @@ const InfoPanel = ({ selectedStructure, onClose }) => {
           </div>
           <h3 style={styles.placeholderTitle}>Click on a brain structure</h3>
           <p style={styles.placeholderText}>
-            Select any region to learn about its function and role in cognitive networks
+            Select any region to learn about its function and role in functional networks
           </p>
         </div>
       </div>
