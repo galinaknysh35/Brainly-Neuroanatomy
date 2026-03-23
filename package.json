@@ -12,10 +12,13 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@jscad/modeling": "^2.13.0",
     "@mui/material": "^7.3.7",
     "@react-three/drei": "^9.92.7",
     "@react-three/fiber": "^8.15.12",
     "mui": "^0.0.1",
+    "nifti-reader-js": "^0.8.0",
+    "pako": "^2.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "three": "^0.160.0"

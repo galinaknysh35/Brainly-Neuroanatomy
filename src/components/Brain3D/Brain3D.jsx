@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import Scene from './Scene';
 import { getStructuresInNetwork, getNetworkById } from '../../data/networkData';
+import MRIMesh from '../MRI/MRIMesh';
 
 const Brain3D = ({ 
   onStructureSelect,
   activeNetwork,
-  selectedStructure  // ← Receive from parent (App)
+  selectedStructure,  // ← Receive from parent (App)
+  mriMesh
 }) => {
   const [highlightedStructures, setHighlightedStructures] = useState([]);
 
@@ -45,6 +47,7 @@ const Brain3D = ({
         highlightedStructures={highlightedStructures}
         onStructureClick={handleStructureClick}
         networkColor={networkColor}
+        mriMesh={mriMesh}
       />
       
       <div style={{

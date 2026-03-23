@@ -95,10 +95,13 @@ body {
 /* ==================== LAYOUT ==================== */
 
 .app {
-  display: grid;
-  grid-template-rows: var(--header-height) 1fr var(--footer-height);
+  display: flex;
+  flex-direction: column;
   height: 100vh;
+  width: 100vw;
   overflow: hidden;
+  margin: 0;      /* ← Make sure these are here */
+  padding: 0;     /* ← Make sure these are here */
 }
 
 /* ===== HEADER ===== */
@@ -149,12 +152,13 @@ body {
 
 .main-content {
   display: grid;
-  grid-template-columns: var(--sidebar-width) 1fr var(--sidebar-width);
-  gap: 0;
+  grid-template-columns: 300px 1fr 350px;
+  flex: 1;        /* ← Takes remaining space */
+  height: 100%;   /* ← Or use this */
   overflow: hidden;
-  background: var(--color-gray-100);
+  margin: 0;
+  padding: 0;
 }
-
 /* ===== SIDEBARS ===== */
 
 .left-sidebar,
@@ -390,7 +394,7 @@ body {
 
 .mb-1 { margin-bottom: var(--spacing-sm); }
 .mb-2 { margin-bottom: var(--spacing-md); }
-.mb-3 { margin-bottom: var(--spacing-lg); }
+.mb-3 { margin-bottom: var(--spacing-sm); }
 
 .p-1 { padding: var(--spacing-sm); }
 .p-2 { padding: var(--spacing-md); }

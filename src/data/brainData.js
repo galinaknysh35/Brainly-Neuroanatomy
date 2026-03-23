@@ -24,7 +24,7 @@ export const brainStructures = [
     clinicalSignificance: 'Damage can cause difficulty with spatial awareness, problems with reading or math, or neglect syndrome (ignoring one side of space).'
   },
   {
-    id: 'Object_19003',
+    id: 'Temporal_Lobe',
     name: 'Temporal Lobe',
     region: 'Cerebrum',
     relatedStructures: ["Wernickes_Area"],
@@ -73,7 +73,7 @@ export const brainStructures = [
     clinicalSignificance: 'Damage causes ataxia (loss of coordination), tremors, difficulty with precise movements, and problems with balance. Can also affect cognitive and emotional processing.'
   },
   {
-  id: 'Object_19016',
+  id: 'Vermis',
   name: 'Cerebellar Vermis',
   region: 'Cerebellum',
   function: 'The cerebellar vermis coordinates posture, balance, and whole-body movements. It integrates sensory information from the spinal cord and vestibular system to maintain equilibrium and smooth, coordinated motion. It plays a key role in gait and trunk stability.',
@@ -101,6 +101,15 @@ export const brainStructures = [
     networks: ['motor-learning', 'cerebellar'],
     color: '#D35400',
     clinicalSignificance: 'Damage can cause palatal myoclonus (rhythmic movements of the soft palate), difficulty with motor learning, and coordination problems. Lesions may produce distinctive tremors.'
+  },
+  {
+  id: 'Spinal_Cord',
+  name: 'Spinal Cord',
+  region: 'Brainstem',
+  function: 'The spinal cord relays sensory information from the body to the brain and transmits motor commands from the brain to muscles. It also mediates reflexes and contains segmental circuits that coordinate basic motor patterns.',
+  networks: ['sensorimotor', 'somatosensory', 'motor'],
+  color: '#8E44AD',
+  clinicalSignificance: 'Damage to the spinal cord can cause loss of sensation, paralysis, autonomic dysfunction, and impaired reflexes below the level of injury.',
   },
   {
   id: 'Pyramids',
@@ -139,7 +148,23 @@ export const brainStructures = [
     networks: ['visual'],
     color: '#6C3483',
     clinicalSignificance: 'Damage causes homonymous hemianopia (loss of same side of visual field in both eyes). Right tract damage = left visual field loss in both eyes, and vice versa.'
-  }
+  },
+
+  // Sulci and Gyri
+  {
+    id: 'Longitudinal_Fissure',
+    name: 'Longitudinal Fissure',
+    function: 'The longitudinal fissure is the deep groove that separates the left and right cerebral hemispheres. It allows for the division of the brain into two distinct halves, each responsible for different functions. The corpus callosum, a thick band of nerve fibers, lies at the base of the fissure and facilitates communication between the hemispheres.',
+    region: 'Sulci',
+    color: '#9B59B6',
+  },
+  {
+    id: 'Lateral_Sulcus',
+    name: 'Lateral Sulcus (Sylvian Fissure)',
+    function: 'The lateral sulcus, also known as the Sylvian fissure, is a prominent groove that separates the frontal and parietal lobes from the temporal lobe. It is one of the most significant landmarks in the brain and contains important structures such as the insula. The lateral sulcus plays a crucial role in demarcating different functional areas of the brain.',
+    region: 'Sulci',
+    color: '#9B59B6',
+  },
 ];
 
 // Helper functions

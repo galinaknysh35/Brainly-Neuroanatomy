@@ -2,11 +2,12 @@ import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, Environment, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { useEffect, useRef, Suspense } from 'react';
+import MRIMesh from '../MRI/MRIMesh';  // ← ADD THIS!
 import { brainStructures, getStructureById } from '../../data/brainData';  // ← ADD THIS!
 
 
 function BrainModel({ selectedStructure, highlightedStructures, onStructureClick, networkColor }) {
-  const { scene } = useGLTF('/src/components/Brain3D/brain4 .glb');
+  const { scene } = useGLTF('/src/components/Brain3D/brain8.glb');
   const brainRef = useRef();
   const { camera, gl } = useThree();
 
@@ -233,13 +234,14 @@ const Scene = ({
   selectedStructure,
   highlightedStructures,
   onStructureClick,
-  networkColor
+  networkColor,
+  mriMesh
 }) => {
-  console.log('🎬 Scene received:', {
-    selectedStructure,
-    selectedStructureType: typeof selectedStructure,
-    selectedStructureId: selectedStructure?.id
-  });
+  console.log('🎬 Scene - mriMesh value:', mriMesh);
+  console.log('🎬 Scene - mriMesh exists?', !!mriMesh);
+  console.log('🎬 Scene - mriMesh has vertices?', mriMesh?.vertices?.length);
+
+  
   return (
     <Canvas
       style={{
@@ -281,6 +283,7 @@ const Scene = ({
           onStructureClick={onStructureClick}
           networkColor={networkColor}
         />
+        {mriMesh && <MRIMesh geometry={mriMesh} />}
       </Suspense>
     </Canvas>
   );
