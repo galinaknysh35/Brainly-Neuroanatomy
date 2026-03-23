@@ -7,7 +7,7 @@ import { brainStructures, getStructureById } from '../../data/brainData';  // â†
 
 
 function BrainModel({ selectedStructure, highlightedStructures, onStructureClick, networkColor }) {
-  const { scene } = useGLTF('/src/components/Brain3D/brain8.glb');
+  const { scene } = useGLTF('/public/models/brain8.glb');
   const brainRef = useRef();
   const { camera, gl } = useThree();
 
