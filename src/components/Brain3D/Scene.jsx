@@ -290,3 +290,4 @@ const Scene = ({
 };
 
 export default Scene;
+useGLTF.preload('/models/brain8.glb');
