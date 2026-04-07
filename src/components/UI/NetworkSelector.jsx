@@ -1,222 +1,149 @@
-import React, { useState } from 'react';
 import { functionalNetworks } from '../../data/networkData';
 
-/**
- * NetworkSelector Component
- * 
- * Allows users to select a functional network to visualize.
- * Shows all available networks with descriptions.
- * 
- * LEARNING NOTES:
- * 
- * 1. CONTROLLED COMPONENTS:
- *    - Parent component controls the active network
- *    - We notify parent when selection changes via callback
- *    - This is React's "lifting state up" pattern
- * 
- * 2. EVENT HANDLING:
- *    - onClick handlers on each network card
- *    - Toggle behavior: click again to deselect
- * 
- * 3. DYNAMIC STYLING:
- *    - Active network gets highlighted styling
- *    - Hover effects for better UX
- */
-
 const NetworkSelector = ({ activeNetwork, onNetworkSelect }) => {
-  // Track which network is being hovered for preview
-  const [hoveredNetwork, setHoveredNetwork] = useState(null);
+  
+  console.log('🌐 NetworkSelector render:', { activeNetwork });
 
-  /**
-   * Handle network click
-   * Toggle selection: if already active, deselect it
-   */
   const handleNetworkClick = (networkId) => {
+    console.log('🖱️ Network clicked:', networkId);
+    console.log('🖱️ Currently active:', activeNetwork);
+    
+    // Toggle: if clicking the same network, deselect it
     if (activeNetwork === networkId) {
-      // Clicking active network deselects it
+      console.log('➡️ Deselecting network');
       onNetworkSelect(null);
     } else {
-      // Select new network
+      console.log('➡️ Selecting network:', networkId);
       onNetworkSelect(networkId);
     }
   };
 
   return (
     <div style={styles.container}>
-      {/* Header */}
-      <div style={styles.header}>
-        <h2 style={styles.title}>Functional Networks</h2>
-        <p style={styles.subtitle}>
-          Select a network to see how brain regions work together
-        </p>
-      </div>
+      <h3 style={styles.title}>Functional Brain Networks</h3>
+      <p style={styles.description}>
+        Click a network to highlight all structures that participate in it
+      </p>
 
-      {/* Network Grid */}
-      <div style={styles.networkGrid}>
+      <div style={styles.grid}>
         {functionalNetworks.map((network) => {
           const isActive = activeNetwork === network.id;
-          const isHovered = hoveredNetwork === network.id;
-
+          
           return (
             <div
               key={network.id}
               onClick={() => handleNetworkClick(network.id)}
-              onMouseEnter={() => setHoveredNetwork(network.id)}
-              onMouseLeave={() => setHoveredNetwork(null)}
               style={{
                 ...styles.networkCard,
                 borderColor: isActive ? network.color : '#e0e0e0',
-                background: isActive 
-                  ? `linear-gradient(135deg, ${network.color}15, ${network.color}05)`
-                  : isHovered 
-                    ? '#f8f9fa' 
-                    : 'white',
-                transform: isActive ? 'translateY(-2px)' : 'none',
-                boxShadow: isActive 
-                  ? `0 4px 12px ${network.color}30`
-                  : isHovered
-                    ? '0 2px 8px rgba(0,0,0,0.08)'
-                    : '0 1px 3px rgba(0,0,0,0.05)'
+                background: isActive ? `${network.color}15` : 'white',
+                transform: isActive ? 'scale(1.02)' : 'scale(1)',
               }}
             >
-              {/* Color indicator */}
-              <div style={{
-                ...styles.colorDot,
-                background: network.color,
-                boxShadow: isActive ? `0 0 12px ${network.color}` : 'none'
-              }} />
-
-              {/* Network info */}
-              <div style={styles.networkInfo}>
-                <h3 style={styles.networkName}>{network.name}</h3>
-                <p style={styles.networkDescription}>
-                  {network.description}
-                </p>
-                
-                {/* Structure count */}
-                <div style={styles.structureCount}>
-                  {network.structures.length} structure{network.structures.length !== 1 ? 's' : ''}
-                </div>
-
-                {/* Active indicator */}
-                {isActive && (
-                  <div style={styles.activeLabel}>
-                    ✓ Active
-                  </div>
-                )}
+              <div
+                style={{
+                  ...styles.colorIndicator,
+                  background: network.color,
+                }}
+              />
+              <div style={styles.networkName}>{network.name}</div>
+              <div style={styles.networkDescription}>
+                {network.description}
               </div>
+              {isActive && (
+                <div style={styles.activeBadge}>ACTIVE</div>
+              )}
             </div>
           );
         })}
       </div>
 
-      {/* Info box */}
-      <div style={styles.infoBox}>
-        <strong>💡 Tip:</strong> Functional networks show how different brain regions 
-        collaborate to perform complex cognitive tasks. Click a network to highlight 
-        its components in the 3D view.
-      </div>
+      {activeNetwork && (
+        <button
+          onClick={() => handleNetworkClick(null)}
+          style={styles.clearButton}
+        >
+          Clear Network Selection
+        </button>
+      )}
     </div>
   );
 };
 
 const styles = {
   container: {
-    width: '100%',
-    height: '100%',
-    background: 'white',
-    overflowY: 'auto',
-    fontFamily: '"Helvetica Neue", Arial, sans-serif'
+    padding: '20px',
   },
-  
-  header: {
-    padding: '25px 30px 20px',
-    borderBottom: '1px solid #e0e0e0'
-  },
-  
   title: {
-    fontSize: '24px',
+    fontSize: '20px',
     fontWeight: '700',
-    margin: '0 0 8px 0',
-    color: '#1a1a1a'
+    marginBottom: '10px',
+    color: '#1a1a1a',
   },
-  
-  subtitle: {
+  description: {
     fontSize: '14px',
     color: '#666',
-    margin: '0',
-    lineHeight: '1.5'
+    marginBottom: '20px',
+    lineHeight: '1.5',
   },
-  
-  networkGrid: {
-    padding: '20px',
+  grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-    gap: '16px'
+    gridTemplateColumns: '1fr',
+    gap: '12px',
   },
-  
   networkCard: {
-    padding: '20px',
+    padding: '15px',
+    borderRadius: '8px',
     border: '2px solid',
-    borderRadius: '12px',
     cursor: 'pointer',
-    transition: 'all 0.2s ease',
-    position: 'relative'
+    transition: 'all 0.2s',
+    position: 'relative',
   },
-  
-  colorDot: {
-    width: '12px',
-    height: '12px',
-    borderRadius: '50%',
+  colorIndicator: {
+    width: '4px',
+    height: '100%',
     position: 'absolute',
-    top: '20px',
-    right: '20px',
-    transition: 'box-shadow 0.2s'
+    left: 0,
+    top: 0,
+    borderRadius: '8px 0 0 8px',
   },
-  
-  networkInfo: {
-    paddingRight: '30px'
-  },
-  
   networkName: {
-    fontSize: '16px',
-    fontWeight: '700',
-    margin: '0 0 10px 0',
+    fontSize: '15px',
+    fontWeight: '600',
+    marginBottom: '5px',
     color: '#1a1a1a',
-    lineHeight: '1.3'
+    marginLeft: '10px',
   },
-  
   networkDescription: {
     fontSize: '13px',
     color: '#666',
-    margin: '0 0 12px 0',
-    lineHeight: '1.6'
+    lineHeight: '1.4',
+    marginLeft: '10px',
   },
-  
-  structureCount: {
-    fontSize: '12px',
-    color: '#999',
-    fontWeight: '600'
-  },
-  
-  activeLabel: {
-    marginTop: '10px',
-    fontSize: '12px',
+  activeBadge: {
+    position: 'absolute',
+    top: '10px',
+    right: '10px',
+    fontSize: '10px',
     fontWeight: '700',
-    color: '#27ae60',
-    display: 'inline-block'
+    color: '#667eea',
+    background: 'white',
+    padding: '3px 8px',
+    borderRadius: '12px',
+    border: '1px solid #667eea',
   },
-  
-  infoBox: {
-    margin: '20px',
-    padding: '15px 20px',
-    background: '#f0f7ff',
-    border: '1px solid #c2e0ff',
+  clearButton: {
+    marginTop: '20px',
+    width: '100%',
+    padding: '12px',
+    background: '#999',
+    color: 'white',
+    border: 'none',
     borderRadius: '8px',
-    fontSize: '13px',
-    color: '#0066cc',
-    lineHeight: '1.6'
-  }
+    cursor: 'pointer',
+    fontSize: '14px',
+    fontWeight: '600',
+  },
 };
 
 export default NetworkSelector;

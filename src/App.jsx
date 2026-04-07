@@ -12,6 +12,8 @@ function App() {
   const [selectedStructure, setSelectedStructure] = useState(null);
   const [activeNetwork, setActiveNetwork] = useState(null);
   const [activeView, setActiveView] = useState('info');
+  const [highlightedStructures, setHighlightedStructures] = useState([]);
+  const [networkColor, setNetworkColor] = useState(null);
 
   // MRI upload state
   const [mriMesh, setMriMesh] = useState(null);
@@ -26,6 +28,8 @@ function App() {
 
   const handleNetworkSelect = (networkId) => {
     setActiveNetwork(networkId);
+    setHighlightedStructures(networkId ? getStructuresInNetwork(networkId) : []);
+    setNetworkColor(networkId ? getNetworkById(networkId)?.color : '#FFD700');
   };
 
   const handleViewChange = (view) => {

@@ -17,10 +17,12 @@
     "@react-three/drei": "^9.92.7",
     "@react-three/fiber": "^8.15.12",
     "mui": "^0.0.1",
+    "ndarray": "^1.0.19",
     "nifti-reader-js": "^0.8.0",
     "pako": "^2.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "surface-nets": "^1.0.2",
     "three": "^0.160.0"
   },
   "devDependencies": {

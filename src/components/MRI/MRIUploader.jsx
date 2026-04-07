@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import * as nifti from 'nifti-reader-js';
 import pako from 'pako';
+import ndarray from 'ndarray';
+import surfaceNets from 'surface-nets';
 
 const MRIUploader = ({ onMeshGenerated }) => {
   const [processing, setProcessing] = useState(false);
@@ -25,20 +27,18 @@ const MRIUploader = ({ onMeshGenerated }) => {
 
       let data = arrayBuffer;
 
-      // Check if file is gzipped (most .nii.gz files are)
+      // Check if file is gzipped
       const isGzipped = file.name.endsWith('.gz') || nifti.isCompressed(arrayBuffer);
       
       if (isGzipped) {
         console.log('📦 Decompressing gzipped file...');
         try {
-          // Decompress using pako
           const compressed = new Uint8Array(arrayBuffer);
           const decompressed = pako.ungzip(compressed);
           data = decompressed.buffer;
           console.log('✅ Decompressed:', data.byteLength, 'bytes');
         } catch (decompressError) {
           console.error('❌ Decompression failed:', decompressError);
-          // Try nifti-reader-js decompression as fallback
           data = nifti.decompress(arrayBuffer);
           console.log('✅ Decompressed (fallback):', data.byteLength, 'bytes');
         }
@@ -57,7 +57,6 @@ const MRIUploader = ({ onMeshGenerated }) => {
         dims: niftiHeader.dims,
         pixDims: niftiHeader.pixDims,
         datatype: niftiHeader.datatypeCode,
-        description: niftiHeader.description,
       });
 
       setProgress(50);
@@ -73,10 +72,10 @@ const MRIUploader = ({ onMeshGenerated }) => {
       console.log('✅ Image data read:', niftiImage.byteLength, 'bytes');
       setProgress(60);
 
-      // Convert to 3D mesh
-      console.log('🔨 Generating 3D mesh...');
+      // Convert to 3D mesh using Marching Cubes
+      console.log('🔨 Generating smooth 3D mesh using Marching Cubes...');
       const mesh = await volumeToMesh(niftiImage, niftiHeader, (p) => {
-        setProgress(60 + p * 0.3); // 60% to 90%
+        setProgress(60 + p * 0.35); // 60% to 95%
       });
       
       console.log('✅ Mesh generated!');
@@ -104,13 +103,13 @@ const MRIUploader = ({ onMeshGenerated }) => {
     }
   };
 
-  // Simple marching cubes implementation
+  // Marching Cubes implementation using surface-nets
   const volumeToMesh = async (imageData, header, onProgress) => {
     const { dims, datatypeCode } = header;
     const [, width, height, depth] = dims;
 
     console.log('🎲 Volume dimensions:', width, 'x', height, 'x', depth);
-    console.log('📊 Datatype:', datatypeCode);
+    console.log('📊 Datatype code:', datatypeCode);
 
     // Convert to appropriate typed array based on datatype
     let data;
@@ -134,7 +133,10 @@ const MRIUploader = ({ onMeshGenerated }) => {
         data = new Uint8Array(imageData);
     }
 
+    onProgress(0.1);
+
     // Calculate statistics for adaptive thresholding
+    console.log('📊 Calculating data statistics...');
     let min = Infinity, max = -Infinity, sum = 0;
     for (let i = 0; i < data.length; i++) {
       const val = data[i];
@@ -144,78 +146,74 @@ const MRIUploader = ({ onMeshGenerated }) => {
     }
     const mean = sum / data.length;
     
-    // Adaptive threshold (50% between mean and max)
-    const threshold = mean + (max - mean) * 0.3;
+    // Adaptive threshold - find brain tissue
+    const threshold = mean + (max - mean) * 0.25;
     
-    console.log('📈 Data stats:', { min, max, mean, threshold });
+    console.log('📈 Data statistics:', { 
+      min: min.toFixed(2), 
+      max: max.toFixed(2), 
+      mean: mean.toFixed(2), 
+      threshold: threshold.toFixed(2) 
+    });
 
+    onProgress(0.3);
+
+    // Create ndarray (required by surface-nets)
+    console.log('🔧 Creating volume array...');
+    const volume = ndarray(data, [width, height, depth]);
+
+    onProgress(0.4);
+
+    // Run Marching Cubes (surface-nets algorithm)
+    console.log('🔨 Running Marching Cubes algorithm (this may take a moment)...');
+    const surfaceMesh = surfaceNets(volume, threshold);
+
+    console.log('✅ Surface extracted:', {
+      vertices: surfaceMesh.positions.length,
+      faces: surfaceMesh.cells.length
+    });
+
+    onProgress(0.8);
+
+    // Convert to format our renderer expects
     const vertices = [];
     const indices = [];
 
-    // Downsample for performance (every Nth voxel)
-    const step = Math.max(2, Math.floor(width / 100)); // Adaptive step size
-    console.log('⚡ Using step size:', step);
+    // Scale and center the mesh
+    const scale = 0.3; // Adjust this to make brain bigger/smaller
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const centerZ = depth / 2;
 
-    const scale = 0.05; // Scale factor for visualization
-
-    for (let z = 0; z < depth - step; z += step) {
-      for (let y = 0; y < height - step; y += step) {
-        for (let x = 0; x < width - step; x += step) {
-          
-          const idx = x + y * width + z * width * height;
-          const value = data[idx];
-
-          // If voxel is above threshold, add geometry
-          if (value > threshold) {
-            const px = (x - width / 2) * scale;
-            const py = (y - height / 2) * scale;
-            const pz = (z - depth / 2) * scale;
-
-            addVoxel(vertices, indices, px, py, pz, step * scale);
-          }
-        }
-      }
-      
-      // Report progress
-      if (z % Math.floor(depth / 10) === 0) {
-        const progress = z / depth;
-        onProgress(progress);
-        console.log(`🔨 Processing: ${Math.round(progress * 100)}%`);
-      }
+    console.log('📐 Processing vertices...');
+    // Add vertices with centering and scaling
+    for (let i = 0; i < surfaceMesh.positions.length; i++) {
+      const [x, y, z] = surfaceMesh.positions[i];
+      vertices.push(
+        (x - centerX) * scale,
+        (y - centerY) * scale,
+        (z - centerZ) * scale
+      );
     }
 
-    console.log('✅ Generated:', vertices.length / 3, 'vertices,', indices.length / 3, 'triangles');
+    onProgress(0.9);
 
-    return { vertices, indices };
-  };
+    console.log('🔺 Processing triangles...');
+    // Add triangle indices
+    for (let i = 0; i < surfaceMesh.cells.length; i++) {
+      const [a, b, c] = surfaceMesh.cells[i];
+      indices.push(a, b, c);
+    }
 
-  const addVoxel = (vertices, indices, x, y, z, size) => {
-    const s = size / 2;
-    const baseIdx = vertices.length / 3;
+    onProgress(0.95);
 
-    // 8 corners of a cube
-    const corners = [
-      [x - s, y - s, z - s], [x + s, y - s, z - s],
-      [x + s, y + s, z - s], [x - s, y + s, z - s],
-      [x - s, y - s, z + s], [x + s, y - s, z + s],
-      [x + s, y + s, z + s], [x - s, y + s, z + s],
-    ];
-
-    corners.forEach(([cx, cy, cz]) => {
-      vertices.push(cx, cy, cz);
+    console.log('✅ Mesh ready:', {
+      vertices: vertices.length / 3,
+      triangles: indices.length / 3,
+      size: ((vertices.length * 4 + indices.length * 4) / 1024 / 1024).toFixed(2) + ' MB'
     });
 
-    // 12 triangles (2 per face, 6 faces)
-    const faceIndices = [
-      0, 1, 2, 0, 2, 3, // front
-      4, 6, 5, 4, 7, 6, // back
-      0, 4, 5, 0, 5, 1, // bottom
-      2, 6, 7, 2, 7, 3, // top
-      0, 3, 7, 0, 7, 4, // left
-      1, 5, 6, 1, 6, 2, // right
-    ];
-
-    faceIndices.forEach(i => indices.push(baseIdx + i));
+    return { vertices, indices };
   };
 
   return (
@@ -228,7 +226,7 @@ const MRIUploader = ({ onMeshGenerated }) => {
       <div style={styles.uploadBox}>
         <input
           type="file"
-          accept=".nii,.nii.gz,.nii.gz"
+          accept=".nii,.nii.gz"
           onChange={handleFileUpload}
           style={styles.input}
           id="mri-upload"
@@ -249,12 +247,14 @@ const MRIUploader = ({ onMeshGenerated }) => {
                 Processing MRI... {Math.round(progress)}%
               </div>
               <div style={styles.hint}>
-                This may take 30-60 seconds for large files
+                Generating smooth brain surface using Marching Cubes algorithm
+                <br/>
+                This may take 30-90 seconds for large files
               </div>
             </>
           ) : (
             <>
-              📁 Click to Upload
+              📁 Click to Upload MRI Scan
               <div style={styles.hint}>
                 Accepts .nii, .nii.gz (NIfTI format)<br/>
                 Max file size: 100 MB
@@ -283,7 +283,14 @@ const MRIUploader = ({ onMeshGenerated }) => {
       )}
 
       <div style={styles.tips}>
-        <h4 style={styles.tipsTitle}>💡 Tips:</h4>
+        <h4 style={styles.tipsTitle}>💡 How it works:</h4>
+        <ul style={styles.tipsList}>
+          <li>Uploads your MRI scan (NIfTI format)</li>
+          <li>Analyzes brain tissue using adaptive thresholding</li>
+          <li>Generates smooth 3D surface using Marching Cubes algorithm</li>
+          <li>Renders interactive 3D brain model in the viewer</li>
+        </ul>
+        <h4 style={styles.tipsTitle}>📊 Tips:</h4>
         <ul style={styles.tipsList}>
           <li>Works best with T1-weighted brain scans</li>
           <li>Files under 50MB process faster</li>
@@ -338,6 +345,7 @@ const styles = {
     color: '#999',
     fontWeight: '400',
     marginTop: '5px',
+    lineHeight: '1.6',
   },
   spinner: {
     border: '3px solid rgba(102, 126, 234, 0.1)',
@@ -384,6 +392,7 @@ const styles = {
     fontSize: '14px',
     fontWeight: '600',
     marginBottom: '10px',
+    marginTop: '15px',
     color: '#333',
   },
   tipsList: {
