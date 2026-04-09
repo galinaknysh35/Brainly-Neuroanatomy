@@ -5,8 +5,20 @@ import { useEffect, useRef, Suspense } from 'react';
 import MRIMesh from '../MRI/MRIMesh';
 import { brainStructures, getStructureById } from '../../data/brainData';
 
-function BrainModel({ selectedStructure, highlightedStructures, onStructureClick, networkColor }) {
-  const { scene } = useGLTF('/models/brain8.glb');
+function BrainModel({ 
+  selectedStructure, 
+  highlightedStructures, 
+  onStructureClick, 
+  networkColor,
+  brainModel = 'full' // 'full' or 'midsagittal'
+}) {
+  // Load both models
+  const { scene: fullBrainScene } = useGLTF('/models/brain8.glb');
+  const { scene: midsagittalScene } = useGLTF('/models/mid.brain.glb');
+  
+  // Use the appropriate scene based on brainModel prop
+  const scene = brainModel === 'midsagittal' ? midsagittalScene : fullBrainScene;
+  
   const brainRef = useRef();
   const { camera, gl } = useThree();
 
@@ -75,14 +87,14 @@ function BrainModel({ selectedStructure, highlightedStructures, onStructureClick
         }
         
         child.material.color.set('#e864be');
-        child.material.emissive.set('#060606');
+        child.material.emissive.set('#262020');
         child.material.emissiveIntensity = 0.1;
         child.material.transparent = false;
         child.material.opacity = 0.7;
         child.material.needsUpdate = true;
       }
     });
-  }, []);
+  }, [brainModel]);
 
   // HIGHLIGHTING LOGIC
   useEffect(() => {
@@ -161,17 +173,28 @@ function BrainModel({ selectedStructure, highlightedStructures, onStructureClick
   // Debug: Log mesh names
   useEffect(() => {
     if (brainRef.current) {
-      console.log('🧠 === BRAIN MODEL LOADED ===');
+      console.log(`🧠 === ${brainModel.toUpperCase()} BRAIN MODEL LOADED ===`);
       brainRef.current.traverse((child) => {
         if (child.isMesh) {
           console.log('  -', child.name);
         }
       });
     }
-  }, []);
+  }, [brainModel]);
 
-  return <primitive ref={brainRef} object={scene} scale={1.5} rotation={[0, Math.PI / 2, 0]} />;
+  const modelScale = brainModel === 'midsagittal' ? 128 : 1.5;
+
+  return (
+  <primitive
+    ref={brainRef}
+    object={scene.clone(true)}   // ← deep clone so models don’t share memory
+    scale={modelScale}
+    rotation={[0, Math.PI / 2, 0]}
+    key={brainModel}             // ← forces R3F to re-mount when switching
+  />
+  );
 }
+  
 
 function LoadingBrain() {
   return (
@@ -182,15 +205,17 @@ function LoadingBrain() {
   );
 }
 
+
 const Scene = ({
   selectedStructure,
   highlightedStructures,
   onStructureClick,
   networkColor,
-  mriMesh
+  mriMesh,
+  brainModel = 'full' // Add this prop
 }) => {
   console.log('🎬 Scene - mriMesh:', mriMesh);
-  console.log('🎬 About to render MRIMesh');
+  console.log('🎬 Brain model:', brainModel);
 
   return (
     <Canvas
@@ -203,7 +228,7 @@ const Scene = ({
     >
       <PerspectiveCamera 
         makeDefault 
-        position={[8, 1, 400]} 
+        position={[0, 0, 400]} 
         fov={50} 
         near={0.1} 
         far={1000} 
@@ -212,7 +237,7 @@ const Scene = ({
       <OrbitControls 
         enableDamping 
         dampingFactor={0.05} 
-        minDistance={20} 
+        minDistance={100} 
         maxDistance={1000} 
         target={[10, 55, 0]} 
       />
@@ -232,9 +257,9 @@ const Scene = ({
           highlightedStructures={highlightedStructures}
           onStructureClick={onStructureClick}
           networkColor={networkColor}
+          brainModel={brainModel}
         />
         
-        {/* FIXED: Changed geometry to meshData */}
         <MRIMesh meshData={mriMesh} />
       </Suspense>
     </Canvas>
@@ -242,4 +267,7 @@ const Scene = ({
 };
 
 export default Scene;
+
+// Preload both models
 useGLTF.preload('/models/brain8.glb');
+useGLTF.preload('/models/mid.brain.glb');

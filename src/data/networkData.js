@@ -45,7 +45,7 @@ export const functionalNetworks = [
     name: 'Salience Network',
     description: 'Detects and filters important stimuli from the environment. Switches between default mode and executive control networks. Processes emotional significance.',
     structures: [
-      'anterior-cingulate',
+      'Anterior_Cingulate_1',
       'insula',
       'amygdala'
     ],
@@ -58,28 +58,29 @@ export const functionalNetworks = [
     name: 'Motor Network',
     description: 'Controls voluntary movement, motor planning, and coordination. Includes cortical and subcortical motor regions.',
     structures: [
-      'motor-cortex',
-      'premotor-cortex',
-      'basal-ganglia',
-      'cerebellum'
+      'Primary_Motor_Cortex',
+      'Premotor_Cortex',
+      'Basal_Ganglia',
+      'Corpus_Cerebelli'
     ],
     color: '#E74C3C',
     discoveredBy: 'Classical neuroanatomy, refined with modern imaging',
     clinicalRelevance: 'Affected in Parkinson\'s disease, Huntington\'s disease, stroke'
   },
+
   {
-    id: 'sensory',
-    name: 'Somatosensory Network',
-    description: 'Processes touch, pain, temperature, and body position information from throughout the body.',
-    structures: [
-      'somatosensory-cortex',
-      'posterior-parietal',
-      'thalamus'
-    ],
-    color: '#F39C12',
-    discoveredBy: 'Classical sensory neuroscience',
-    clinicalRelevance: 'Damage causes sensory loss, chronic pain syndromes'
-  },
+  id: 'somatosensory',
+  name: 'Somatosensory Network',
+  description: 'Processes touch, pressure, pain, temperature, vibration, and body position (proprioception) from the entire body.',
+  structures: [
+    'Primary_Somatosensory_Cortex',
+    'Somatosensory_Association_Cortex',
+    'Thalamus_1'
+  ],
+  color: '#3bf312',
+  discoveredBy: 'Classical sensory neuroscience and cortical mapping studies',
+  clinicalRelevance: 'Damage causes sensory loss, impaired body awareness, difficulty localizing touch, or chronic pain syndromes.'
+},
   {
     id: 'visual',
     name: 'Visual Network',

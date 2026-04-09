@@ -60,6 +60,17 @@ export const brainStructures = [
   color: '#E74C3C',
   clinicalSignificance: "Damage to Broca's area causes Broca's aphasia, leading to slow, effortful, and non-fluent speech. Individuals typically understand language well but struggle to produce words and form complete sentences."
 },
+{
+  id: 'Thalamus_1',
+  name: 'Thalamus',
+  region: 'Diencephalon',
+  relatedStructures: ['Hypothalamus', 'Basal_Ganglia', 'Cortex'],
+  function: 'The thalamus acts as the brain’s central relay station. Nearly all sensory information (except smell) passes through the thalamus before reaching the cerebral cortex. It helps regulate attention, consciousness, sleep–wake cycles, and the flow of motor and sensory signals throughout the brain.',
+  networks: ['sensory', 'motor', 'attention'],
+  color: '#C39BD3',
+  clinicalSignificance: 'Damage can cause sensory loss, motor disturbances, severe attention deficits, or thalamic pain syndrome. Thalamic strokes often lead to profound sensory abnormalities and disruptions in consciousness or alertness.'
+},
+
 
 
   // CEREBELLUM
@@ -82,6 +93,68 @@ export const brainStructures = [
   clinicalSignificance: 'Damage to the vermis can cause truncal ataxia, wide-based gait, difficulty standing upright, impaired balance, and problems with coordinated whole-body movements.'
 }
 ,
+  // MIDBRAIN STRUCTURES
+  {
+  id: 'Anterior_Commissure',
+  name: 'Anterior Commissure',
+  region: 'Cerebrum',
+  relatedStructures: ['Corpus_Callosum'],
+  function: 'The anterior commissure is a bundle of white matter fibers connecting the two temporal lobes. It plays a role in interhemispheric communication, especially for olfactory and temporal lobe information.',
+  networks: ['interhemispheric'],
+  color: '#A569BD',
+  clinicalSignificance: 'Damage can impair interhemispheric transfer of sensory information and may contribute to memory or emotional processing deficits.'
+},
+{
+  id: 'Inferior_Colliculus',
+  name: 'Inferior Colliculus',
+  region: 'Midbrain',
+  relatedStructures: ['Superior_Colliculus'],
+  function: 'The inferior colliculus is a major auditory relay center. It integrates sound localization cues, processes auditory reflexes, and sends information to the thalamus for further auditory processing.',
+  networks: ['auditory'],
+  color: '#3498DB',
+  clinicalSignificance: 'Damage can cause difficulty localizing sounds, impaired auditory reflexes, and deficits in processing complex auditory patterns.'
+},
+{
+  id: 'Superior_Colliculus_1',
+  name: 'Superior Colliculus',
+  region: 'Midbrain',
+  relatedStructures: ['Inferior_Colliculus'],
+  function: 'The superior colliculus coordinates visual reflexes and rapid eye movements (saccades). It integrates visual, auditory, and somatosensory inputs to guide orienting behaviors.',
+  networks: ['visual', 'sensorimotor'],
+  color: '#1ABC9C',
+  clinicalSignificance: 'Damage can impair visual tracking, reflexive eye movements, and the ability to orient toward visual or auditory stimuli.'
+},
+{
+  id: 'Mammilary_Body',
+  name: 'Mammillary Body',
+  region: 'Limbic System',
+  relatedStructures: ['Fornix', 'Thalamus'],
+  function: 'The mammillary bodies are relay nuclei involved in memory processing. They receive hippocampal input via the fornix and project to the thalamus, supporting recollective memory and spatial navigation.',
+  networks: ['memory'],
+  color: '#D35400',
+  clinicalSignificance: 'Damage is classically associated with Wernicke–Korsakoff syndrome, causing severe memory loss, confabulation, and disorientation.'
+},
+{
+  id: 'Fornix_1',
+  name: 'Fornix',
+  region: 'Limbic System',
+  relatedStructures: ['Hippocampus', 'Mammillary_Body'],
+  function: 'The fornix is a major output tract of the hippocampus, carrying memory-related signals to the mammillary bodies and other limbic structures. It is essential for forming and recalling episodic memories.',
+  networks: ['memory'],
+  color: '#8E44AD',
+  clinicalSignificance: 'Damage to the fornix can cause severe memory impairment, including anterograde amnesia. It is often affected in Alzheimer’s disease and other degenerative conditions.'
+},
+
+  // VENTRICULAR SYSTEM
+  {
+  id: 'Lateral_Ventricle_1',
+  name: 'Lateral Ventricle',
+  region: 'Cerebrum',
+  function: 'The lateral ventricles are fluid-filled cavities that produce and circulate cerebrospinal fluid (CSF). They cushion the brain, remove waste, and help maintain intracranial pressure.',
+  networks: ['csf-system'],
+  color: '#5DADE2',
+  clinicalSignificance: 'Enlargement can indicate hydrocephalus, brain atrophy, or developmental abnormalities. Ventricular asymmetry may be associated with neurological or psychiatric conditions.'
+},
 
   // BRAINSTEM STRUCTURES
   {
@@ -159,12 +232,52 @@ export const brainStructures = [
     color: '#9B59B6',
   },
   {
+  id: 'Anterior_Cingulate_1',
+  name: 'Anterior Cingulate Cortex',
+  region: 'Cerebrum',
+  relatedStructures: ['Prefrontal_Cortex', 'Amygdala'],
+  function: 'The anterior cingulate cortex integrates emotion, attention, and decision-making. It helps regulate emotional responses, detect conflicts, evaluate errors, and modulate autonomic functions. It acts as a bridge between cognitive control and emotional processing.',
+  networks: ['salience', 'executive-control', 'emotion'],
+  color: '#FF6F61',
+  clinicalSignificance: 'Damage or dysfunction is associated with depression, anxiety disorders, ADHD, and impaired error monitoring or emotional regulation.'
+},
+  {
     id: 'Lateral_Sulcus',
     name: 'Lateral Sulcus (Sylvian Fissure)',
     function: 'The lateral sulcus, also known as the Sylvian fissure, is a prominent groove that separates the frontal and parietal lobes from the temporal lobe. It is one of the most significant landmarks in the brain and contains important structures such as the insula. The lateral sulcus plays a crucial role in demarcating different functional areas of the brain.',
     region: 'Sulci',
     color: '#9B59B6',
   },
+  {
+  id: 'Primary_Somatosensory_Cortex',
+  name: 'Primary Somatosensory Cortex (S1)',
+  region: 'Parietal Lobe',
+  relatedStructures: ['Somatosensory_Association_Cortex'],
+  function: 'The primary somatosensory cortex receives touch, pressure, pain, temperature, and proprioceptive information from the body. It contains a sensory homunculus that maps sensations from specific body regions.',
+  networks: ['somatosensory'],
+  color: '#F7B7A3',
+  clinicalSignificance: 'Damage can cause loss of tactile sensation, impaired spatial discrimination, difficulty recognizing objects by touch (astereognosis), and altered body awareness.'
+},
+{
+  id: 'Primary_Motor_Cortex',
+  name: 'Primary Motor Cortex (M1)',
+  region: 'Frontal Lobe',
+  relatedStructures: ['Premotor_Cortex', 'Supplementary_Motor_Area'],
+  function: 'The primary motor cortex generates voluntary movement by sending motor commands to the spinal cord. It contains a somatotopic map (the motor homunculus) that controls precise movements of the face, hands, and body.',
+  networks: ['motor'],
+  color: '#FF8C42',
+  clinicalSignificance: 'Damage can cause weakness or paralysis on the opposite side of the body, loss of fine motor control, and abnormal reflexes. Stroke affecting M1 is a common cause of hemiparesis.'
+},
+{
+  id: 'Corpus_Callosum_1',
+  name: 'Corpus Callosum',
+  region: 'Cerebrum',
+  relatedStructures: ['Anterior_Commissure'],
+  function: 'The corpus callosum is the largest white matter tract in the brain, connecting the left and right cerebral hemispheres. It enables rapid communication between the hemispheres, allowing integration of sensory information, motor commands, and higher cognitive functions.',
+  networks: ['interhemispheric', 'executive-control'],
+  color: '#A3CEF1',
+  clinicalSignificance: 'Damage can cause split-brain symptoms, impaired coordination between the two sides of the body, and deficits in language, attention, or problem-solving. It is often affected in multiple sclerosis and traumatic brain injury.'
+},
 ];
 
 // Helper functions

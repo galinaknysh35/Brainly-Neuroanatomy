@@ -19,6 +19,9 @@ function App() {
   const [mriMesh, setMriMesh] = useState(null);
   const [showMRIUpload, setShowMRIUpload] = useState(false);
 
+  // Brain model state - 'full' or 'midsagittal'
+  const [brainModel, setBrainModel] = useState('full');
+
   // ===================== HANDLERS =====================
   const handleStructureSelect = (structure) => {
     console.log('📱 App - handleStructureSelect:', structure);
@@ -37,10 +40,16 @@ function App() {
   };
 
   const handleMeshGenerated = (meshData) => {
-  console.log('✅ MRI mesh generated!', meshData);
-  setMriMesh(meshData);
-  setShowMRIUpload(false);
-};
+    console.log('✅ MRI mesh generated!', meshData);
+    setMriMesh(meshData);
+    setShowMRIUpload(false);
+  };
+
+  const handleBrainModelToggle = () => {
+    const newModel = brainModel === 'full' ? 'midsagittal' : 'full';
+    console.log('🧠 Switching brain model to:', newModel);
+    setBrainModel(newModel);
+  };
 
   useEffect(() => {
     console.log('📱 App - selectedStructure changed:', selectedStructure);
@@ -62,60 +71,35 @@ function App() {
           </p>
         </div>
 
-        {/* MRI Upload Button */}
-        <button
-          onClick={() => setShowMRIUpload(true)}
-          style={{
-            padding: '10px 20px',
-            background: '#2ECC71',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            marginLeft: '20px'
-          }}
-        >
-          📁 Upload MRI
-        </button>
+        {/* Brain Model Toggle Button */}
+        <div className="header-controls">
+          <button
+            onClick={handleBrainModelToggle}
+            className="model-toggle-btn"
+            title={brainModel === 'full' ? 'Switch to Midsagittal View' : 'Switch to Full Brain View'}
+          >
+            {brainModel === 'full' ? '↔️ Midsagittal' : '🧠 Full Brain'}
+          </button>
+
+          {/* MRI Upload Button */}
+          <button
+            onClick={() => setShowMRIUpload(true)}
+            className="mri-upload-btn"
+          >
+            📁 Upload MRI
+          </button>
+        </div>
       </header>
 
       {/* MRI Upload Modal */}
       {showMRIUpload && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(0,0,0,0.8)',
-            zIndex: 1000,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <div
-            style={{
-              background: 'white',
-              padding: '40px',
-              borderRadius: '16px',
-              maxWidth: '600px',
-            }}
-          >
+        <div className="modal-overlay">
+          <div className="modal-content">
             <MRIUploader onMeshGenerated={handleMeshGenerated} />
 
             <button
               onClick={() => setShowMRIUpload(false)}
-              style={{
-                marginTop: '20px',
-                padding: '10px 20px',
-                background: '#999',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-              }}
+              className="modal-close-btn"
             >
               Cancel
             </button>
@@ -152,6 +136,15 @@ function App() {
           </div>
 
           <div className="sidebar-section">
+            <h3 className="sidebar-title">View</h3>
+            <div className="view-indicator">
+              <span className="badge">
+                {brainModel === 'full' ? '🧠 Full Brain' : '↔️ Midsagittal'}
+              </span>
+            </div>
+          </div>
+
+          <div className="sidebar-section">
             <h3 className="sidebar-title">About the Model</h3>
             <div className="tip-box">
               🎨 This is a realistic 3D brain model.
@@ -173,7 +166,8 @@ function App() {
             onStructureSelect={handleStructureSelect}
             activeNetwork={activeNetwork}
             selectedStructure={selectedStructure}
-            mriMesh={mriMesh}   // <-- MRI mesh passed here
+            mriMesh={mriMesh}
+            brainModel={brainModel}
           />
         </main>
 

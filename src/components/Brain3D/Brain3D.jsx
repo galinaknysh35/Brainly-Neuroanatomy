@@ -7,7 +7,8 @@ const Brain3D = ({
   onStructureSelect,
   activeNetwork,
   selectedStructure,  // ← Receive from parent (App)
-  mriMesh
+  mriMesh,
+  brainModel // ← Receive from parent (App)
 }) => {
   const [highlightedStructures, setHighlightedStructures] = useState([]);
 
@@ -48,6 +49,7 @@ const Brain3D = ({
         onStructureClick={handleStructureClick}
         networkColor={networkColor}
         mriMesh={mriMesh}
+        brainModel={brainModel}
       />
       
       <div style={{

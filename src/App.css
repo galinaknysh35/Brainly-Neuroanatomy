@@ -7,22 +7,6 @@
  * - Subtle gradients and shadows
  * - Professional typography
  * - Accessible color contrasts
- * 
- * Learning Notes:
- * 
- * 1. CSS GRID:
- *    - Modern layout system
- *    - Better than floats or flexbox for page layouts
- *    - Defines rows and columns explicitly
- * 
- * 2. CSS CUSTOM PROPERTIES (Variables):
- *    - Define once, use everywhere
- *    - Easy to maintain and theme
- *    - --variable-name syntax
- * 
- * 3. RESPONSIVE DESIGN:
- *    - @media queries adjust layout for different screen sizes
- *    - Mobile-first approach (start small, scale up)
  */
 
 /* ==================== IMPORTS ==================== */
@@ -89,7 +73,7 @@ body {
   background: var(--color-gray-100);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden; /* Prevent page scroll, let sections handle it */
+  overflow: hidden;
 }
 
 /* ==================== LAYOUT ==================== */
@@ -100,8 +84,8 @@ body {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  margin: 0;      /* ← Make sure these are here */
-  padding: 0;     /* ← Make sure these are here */
+  margin: 0;
+  padding: 0;
 }
 
 /* ===== HEADER ===== */
@@ -111,16 +95,18 @@ body {
   box-shadow: var(--shadow-md);
   position: relative;
   z-index: 100;
-}
-
-.header-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-xl);
-  height: 100%;
+  height: var(--header-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 var(--spacing-xl);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  flex: 1;
 }
 
 .logo {
@@ -148,17 +134,117 @@ body {
   max-width: 400px;
 }
 
+/* Header Controls */
+.header-controls {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.model-toggle-btn,
+.mri-upload-btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-speed);
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.model-toggle-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.model-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.model-toggle-btn:active {
+  transform: translateY(0);
+}
+
+.mri-upload-btn {
+  background: #2ECC71;
+  color: white;
+}
+
+.mri-upload-btn:hover {
+  background: #27ae60;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+}
+
+.mri-upload-btn:active {
+  transform: translateY(0);
+}
+
+/* ===== MODAL ===== */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.modal-content {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+}
+
+.modal-close-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  width: 100%;
+  background: #999;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-speed);
+}
+
+.modal-close-btn:hover {
+  background: #777;
+}
+
 /* ===== MAIN CONTENT AREA ===== */
 
 .main-content {
   display: grid;
   grid-template-columns: 300px 1fr 350px;
-  flex: 1;        /* ← Takes remaining space */
-  height: 100%;   /* ← Or use this */
+  flex: 1;
+  height: 100%;
   overflow: hidden;
   margin: 0;
   padding: 0;
 }
+
 /* ===== SIDEBARS ===== */
 
 .left-sidebar,
@@ -182,6 +268,7 @@ body {
 .sidebar-section {
   padding: var(--spacing-lg);
   border-bottom: 1px solid var(--color-gray-100);
+  animation: fadeIn 0.3s ease-out;
 }
 
 .sidebar-title {
@@ -222,6 +309,24 @@ body {
   letter-spacing: 0.3px;
 }
 
+/* View Indicator */
+.view-indicator {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
 /* Tip Box */
 .tip-box {
   background: #fff8e1;
@@ -247,7 +352,7 @@ body {
   display: flex;
   border-bottom: 2px solid var(--color-gray-100);
   background: white;
-  flex-shrink: 0; /* Don't shrink when content overflows */
+  flex-shrink: 0;
 }
 
 .view-tab {
@@ -306,6 +411,30 @@ body {
   margin: 0;
 }
 
+/* ==================== ANIMATIONS ==================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ==================== RESPONSIVE DESIGN ==================== */
 
 /* Tablet and below */
@@ -316,6 +445,16 @@ body {
   
   .tagline {
     display: none;
+  }
+
+  .header-controls {
+    gap: var(--spacing-sm);
+  }
+
+  .model-toggle-btn,
+  .mri-upload-btn {
+    padding: 8px 14px;
+    font-size: var(--font-size-xs);
   }
 }
 
@@ -342,11 +481,22 @@ body {
   .visualization-area {
     min-height: 400px;
   }
+
+  .header-controls {
+    flex-wrap: wrap;
+    width: 100%;
+    gap: var(--spacing-sm);
+    justify-content: flex-end;
+  }
+
+  .mri-upload-btn {
+    flex: 1;
+    min-width: 120px;
+  }
 }
 
 /* ==================== SCROLLBARS ==================== */
 
-/* Custom scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -363,23 +513,6 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-gray-500);
-}
-
-/* ==================== ANIMATIONS ==================== */
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.sidebar-section {
-  animation: fadeIn 0.3s ease-out;
 }
 
 /* ==================== UTILITIES ==================== */

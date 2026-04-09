@@ -8,6 +8,8 @@ const MRIUploader = ({ onMeshGenerated }) => {
   const [processing, setProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState(null);
+  const [lastFileName, setLastFileName] = useState(null);
+  const [meshStats, setMeshStats] = useState(null);
 
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
@@ -18,6 +20,8 @@ const MRIUploader = ({ onMeshGenerated }) => {
     setProcessing(true);
     setProgress(5);
     setError(null);
+    setMeshStats(null);
+    setLastFileName(file.name);
 
     try {
       // Read file as ArrayBuffer
@@ -50,7 +54,7 @@ const MRIUploader = ({ onMeshGenerated }) => {
       const niftiHeader = nifti.readHeader(data);
       
       if (!niftiHeader) {
-        throw new Error('Invalid NIfTI header');
+        throw new Error('Invalid NIfTI header - file may be corrupted');
       }
 
       console.log('✅ NIfTI Header:', {
@@ -66,7 +70,7 @@ const MRIUploader = ({ onMeshGenerated }) => {
       const niftiImage = nifti.readImage(niftiHeader, data);
       
       if (!niftiImage) {
-        throw new Error('Failed to read image data');
+        throw new Error('Failed to read image data from NIfTI file');
       }
 
       console.log('✅ Image data read:', niftiImage.byteLength, 'bytes');
@@ -74,12 +78,19 @@ const MRIUploader = ({ onMeshGenerated }) => {
 
       // Convert to 3D mesh using Marching Cubes
       console.log('🔨 Generating smooth 3D mesh using Marching Cubes...');
-      const mesh = await volumeToMesh(niftiImage, niftiHeader, (p) => {
-        setProgress(60 + p * 0.35); // 60% to 95%
+      const mesh = await volumeToMesh(niftiHeader, niftiImage, (p) => {
+        setProgress(60 + p * 0.35);
       });
       
       console.log('✅ Mesh generated!');
       setProgress(95);
+
+      // Store mesh stats for display
+      setMeshStats({
+        vertices: mesh.vertices.length / 3,
+        triangles: mesh.indices.length / 3,
+        size: ((mesh.vertices.length * 4 + mesh.indices.length * 4) / 1024 / 1024).toFixed(2),
+      });
 
       // Pass mesh to parent component
       if (onMeshGenerated) {
@@ -92,7 +103,7 @@ const MRIUploader = ({ onMeshGenerated }) => {
       setTimeout(() => {
         setProcessing(false);
         setProgress(0);
-      }, 1000);
+      }, 1500);
 
     } catch (error) {
       console.error('❌ Error processing MRI:', error);
@@ -104,7 +115,7 @@ const MRIUploader = ({ onMeshGenerated }) => {
   };
 
   // Marching Cubes implementation using surface-nets
-  const volumeToMesh = async (imageData, header, onProgress) => {
+  const volumeToMesh = async (header, imageData, onProgress) => {
     const { dims, datatypeCode } = header;
     const [, width, height, depth] = dims;
 
@@ -169,31 +180,82 @@ const MRIUploader = ({ onMeshGenerated }) => {
     const surfaceMesh = surfaceNets(volume, threshold);
 
     console.log('✅ Surface extracted:', {
-      vertices: surfaceMesh.positions.length,
-      faces: surfaceMesh.cells.length
+      positions: surfaceMesh.positions.length,
+      cells: surfaceMesh.cells.length,
+      firstPositions: surfaceMesh.positions.slice(0, 3),
+      firstCells: surfaceMesh.cells.slice(0, 3)
     });
 
     onProgress(0.8);
+
+    // ============================================================
+    // DIAGNOSTIC: Validate the mesh data
+    // ============================================================
+    console.group('🔍 MESH DATA VALIDATION');
+    
+    // Check if positions exist
+    if (!surfaceMesh.positions || surfaceMesh.positions.length === 0) {
+      console.error('❌ NO POSITIONS in mesh!');
+      console.groupEnd();
+      throw new Error('Surface-nets returned no positions');
+    }
+
+    // Check if cells exist
+    if (!surfaceMesh.cells || surfaceMesh.cells.length === 0) {
+      console.error('❌ NO CELLS in mesh!');
+      console.groupEnd();
+      throw new Error('Surface-nets returned no cells');
+    }
+
+    // Validate position data
+    const firstPos = surfaceMesh.positions[0];
+    console.log('First position:', firstPos, 'Type:', Array.isArray(firstPos) ? 'array' : typeof firstPos);
+    
+    // Validate cell data
+    const firstCell = surfaceMesh.cells[0];
+    console.log('First cell:', firstCell, 'Type:', Array.isArray(firstCell) ? 'array' : typeof firstCell);
+
+    // Check for NaN or Infinity
+    let hasNaN = false;
+    for (let i = 0; i < Math.min(100, surfaceMesh.positions.length); i++) {
+      const [x, y, z] = surfaceMesh.positions[i];
+      if (!isFinite(x) || !isFinite(y) || !isFinite(z)) {
+        console.error(`Position ${i} has non-finite value:`, [x, y, z]);
+        hasNaN = true;
+      }
+    }
+    if (hasNaN) {
+      console.error('❌ Some positions contain NaN or Infinity!');
+    } else {
+      console.log('✅ All sampled positions are finite');
+    }
+
+    // Check max index
+    let maxIndex = 0;
+    for (let i = 0; i < surfaceMesh.cells.length; i++) {
+      const [a, b, c] = surfaceMesh.cells[i];
+      maxIndex = Math.max(maxIndex, a, b, c);
+    }
+    console.log(`Index range: 0 to ${maxIndex}, Total vertices: ${surfaceMesh.positions.length}`);
+    
+    if (maxIndex >= surfaceMesh.positions.length) {
+      console.error(`❌ Index out of bounds! Max index ${maxIndex} >= vertex count ${surfaceMesh.positions.length}`);
+    } else {
+      console.log('✅ All indices are in bounds');
+    }
+
+    console.groupEnd();
+    // ============================================================
 
     // Convert to format our renderer expects
     const vertices = [];
     const indices = [];
 
-    // Scale and center the mesh
-    const scale = 0.3; // Adjust this to make brain bigger/smaller
-    const centerX = width / 2;
-    const centerY = height / 2;
-    const centerZ = depth / 2;
-
     console.log('📐 Processing vertices...');
-    // Add vertices with centering and scaling
+    // Add vertices (no transforms)
     for (let i = 0; i < surfaceMesh.positions.length; i++) {
       const [x, y, z] = surfaceMesh.positions[i];
-      vertices.push(
-        (x - centerX) * scale,
-        (y - centerY) * scale,
-        (z - centerZ) * scale
-      );
+      vertices.push(x, y, z);
     }
 
     onProgress(0.9);
@@ -206,6 +268,18 @@ const MRIUploader = ({ onMeshGenerated }) => {
     }
 
     onProgress(0.95);
+
+    // Final validation of output
+    console.group('📋 FINAL OUTPUT VALIDATION');
+    console.log('Vertices array length:', vertices.length, '(should be divisible by 3)');
+    console.log('Indices array length:', indices.length, '(should be divisible by 3)');
+    console.log('Expected vertex count:', vertices.length / 3);
+    console.log('Expected triangle count:', indices.length / 3);
+    
+    // Sample check
+    console.log('First 9 vertex values:', vertices.slice(0, 9));
+    console.log('First 9 index values:', indices.slice(0, 9));
+    console.groupEnd();
 
     console.log('✅ Mesh ready:', {
       vertices: vertices.length / 3,
@@ -250,6 +324,15 @@ const MRIUploader = ({ onMeshGenerated }) => {
                 Generating smooth brain surface using Marching Cubes algorithm
                 <br/>
                 This may take 30-90 seconds for large files
+              </div>
+            </>
+          ) : meshStats ? (
+            <>
+              ✅ Successfully loaded: {lastFileName}
+              <div style={styles.hint}>
+                {meshStats.vertices.toLocaleString()} vertices • {meshStats.triangles.toLocaleString()} triangles
+                <br/>
+                {meshStats.size} MB mesh data
               </div>
             </>
           ) : (
