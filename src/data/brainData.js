@@ -12,6 +12,7 @@ export const brainStructures = [
     function: 'The frontal lobe is responsible for executive functions including reasoning, planning, problem-solving, decision-making, and controlling behavior and emotions. It contains the primary motor cortex (controlling voluntary movement) and areas critical for speech production (Broca\'s area). This lobe is what makes humans capable of complex thought, personality expression, and voluntary movement control.',
     networks: ['executive-control', 'motor', 'language'],
     color: '#4A90E2',
+    difficulty: 'easy',
     clinicalSignificance: 'Damage can cause personality changes, difficulty with planning, impulsive behavior, or motor deficits. Famous case: Phineas Gage.'
   },
   {
@@ -22,6 +23,7 @@ export const brainStructures = [
     function: 'The parietal lobe processes sensory information from the body including touch, temperature, pain, and spatial awareness. It contains the primary somatosensory cortex and is crucial for integrating sensory input with motor output. This lobe helps you understand where your body is in space and process mathematical and spatial reasoning.',
     networks: ['sensory', 'attention', 'spatial'],
     color: '#E67E22',
+    difficulty: 'easy',
     clinicalSignificance: 'Damage can cause difficulty with spatial awareness, problems with reading or math, or neglect syndrome (ignoring one side of space).'
   },
   {
@@ -32,6 +34,7 @@ export const brainStructures = [
     function: 'The temporal lobe is essential for processing auditory information, language comprehension, memory formation, and emotion. It contains the primary auditory cortex, Wernicke\'s area (language understanding), and the hippocampus (memory formation). This lobe helps you understand speech, recognize faces, form new memories, and process emotions.',
     networks: ['auditory', 'language', 'memory', 'emotion'],
     color: '#27AE60',
+    difficulty: 'easy',
     clinicalSignificance: 'Damage can cause memory loss (especially hippocampal damage), difficulty understanding speech, or problems recognizing faces (prosopagnosia). Heavily affected in Alzheimer\'s disease.'
   },
   {
@@ -41,6 +44,7 @@ export const brainStructures = [
     function: 'The occipital lobe is dedicated to processing visual information. It contains the primary visual cortex (V1) which receives input directly from the eyes via the optic nerves. This lobe processes basic visual features like edges, colors, and motion, then sends information to other brain areas for higher-level visual processing like object and face recognition.',
     networks: ['visual'],
     color: '#3498DB',
+    difficulty: 'easy',
     clinicalSignificance: 'Damage can cause partial or complete blindness, visual hallucinations, or inability to recognize objects despite intact eyes (visual agnosia).'
   },
   {
@@ -50,6 +54,7 @@ export const brainStructures = [
   function: "Wernicke's area is responsible for language comprehension. It helps the brain interpret the meaning of spoken and written words, integrate auditory information, and map sounds to linguistic concepts. It works closely with auditory cortex and Broca's area to support fluent communication.",
   networks: ['language'],
   color: '#9B59B6',
+  difficulty: 'medium',
   clinicalSignificance: "Damage to Wernicke's area causes Wernicke's aphasia, characterized by fluent but nonsensical speech, difficulty understanding language, and impaired ability to produce meaningful sentences despite normal grammar and rhythm."
 },
 {
@@ -59,6 +64,7 @@ export const brainStructures = [
   function: "Broca's area is essential for speech production and expressive language. It coordinates the motor planning required to articulate words, form sentences, and produce grammatically structured speech. It also contributes to working memory for language and syntactic processing.",
   networks: ['language'],
   color: '#E74C3C',
+  difficulty: 'medium',
   clinicalSignificance: "Damage to Broca's area causes Broca's aphasia, leading to slow, effortful, and non-fluent speech. Individuals typically understand language well but struggle to produce words and form complete sentences."
 },
 {
@@ -69,6 +75,7 @@ export const brainStructures = [
   function: 'The thalamus acts as the brain’s central relay station. Nearly all sensory information (except smell) passes through the thalamus before reaching the cerebral cortex. It helps regulate attention, consciousness, sleep–wake cycles, and the flow of motor and sensory signals throughout the brain.',
   networks: ['sensory', 'motor', 'attention'],
   color: '#C39BD3',
+  difficulty: 'medium',
   clinicalSignificance: 'Damage can cause sensory loss, motor disturbances, severe attention deficits, or thalamic pain syndrome. Thalamic strokes often lead to profound sensory abnormalities and disruptions in consciousness or alertness.'
 },
 
@@ -82,6 +89,7 @@ export const brainStructures = [
     function: 'The cerebellum (Latin for "little brain") coordinates voluntary movements, balance, posture, and motor learning. Despite being only 10% of brain volume, it contains over 50% of the brain\'s neurons. It fine-tunes motor commands from the cerebral cortex, ensuring smooth and accurate movements. Also involved in cognitive functions like attention and language processing.',
     networks: ['motor', 'coordination', 'balance'],
     color: '#16A085',
+    difficulty: 'easy',
     clinicalSignificance: 'Damage causes ataxia (loss of coordination), tremors, difficulty with precise movements, and problems with balance. Can also affect cognitive and emotional processing.'
   },
   {
@@ -91,6 +99,7 @@ export const brainStructures = [
   function: 'The cerebellar vermis coordinates posture, balance, and whole-body movements. It integrates sensory information from the spinal cord and vestibular system to maintain equilibrium and smooth, coordinated motion. It plays a key role in gait and trunk stability.',
   networks: ['motor'],
   color: '#27AE60',
+  difficulty: 'easy',
   clinicalSignificance: 'Damage to the vermis can cause truncal ataxia, wide-based gait, difficulty standing upright, impaired balance, and problems with coordinated whole-body movements.'
 }
 ,
@@ -103,6 +112,7 @@ export const brainStructures = [
   function: 'The anterior commissure is a bundle of white matter fibers connecting the two temporal lobes. It plays a role in interhemispheric communication, especially for olfactory and temporal lobe information.',
   networks: ['interhemispheric'],
   color: '#A569BD',
+  difficulty: 'hard',
   clinicalSignificance: 'Damage can impair interhemispheric transfer of sensory information and may contribute to memory or emotional processing deficits.'
 },
 {
@@ -112,6 +122,7 @@ export const brainStructures = [
   relatedStructures: ['Superior_Colliculus'],
   function: 'The inferior colliculus is a major auditory relay center. It integrates sound localization cues, processes auditory reflexes, and sends information to the thalamus for further auditory processing.',
   networks: ['auditory'],
+  difficulty: 'hard',
   color: '#3498DB',
   clinicalSignificance: 'Damage can cause difficulty localizing sounds, impaired auditory reflexes, and deficits in processing complex auditory patterns.'
 },
@@ -119,10 +130,10 @@ export const brainStructures = [
   id: 'Superior_Colliculus_1',
   name: 'Superior Colliculus',
   region: 'Midbrain',
-  relatedStructures: ['Inferior_Colliculus'],
   function: 'The superior colliculus coordinates visual reflexes and rapid eye movements (saccades). It integrates visual, auditory, and somatosensory inputs to guide orienting behaviors.',
   networks: ['visual', 'sensorimotor'],
   color: '#1ABC9C',
+  difficulty: 'hard',
   clinicalSignificance: 'Damage can impair visual tracking, reflexive eye movements, and the ability to orient toward visual or auditory stimuli.'
 },
 {
@@ -133,6 +144,7 @@ export const brainStructures = [
   function: 'The mammillary bodies are relay nuclei involved in memory processing. They receive hippocampal input via the fornix and project to the thalamus, supporting recollective memory and spatial navigation.',
   networks: ['memory'],
   color: '#D35400',
+  difficulty: 'hard',
   clinicalSignificance: 'Damage is classically associated with Wernicke–Korsakoff syndrome, causing severe memory loss, confabulation, and disorientation.'
 },
 {
@@ -143,6 +155,7 @@ export const brainStructures = [
   function: 'The fornix is a major output tract of the hippocampus, carrying memory-related signals to the mammillary bodies and other limbic structures. It is essential for forming and recalling episodic memories.',
   networks: ['memory'],
   color: '#8E44AD',
+  difficulty: 'medium',
   clinicalSignificance: 'Damage to the fornix can cause severe memory impairment, including anterograde amnesia. It is often affected in Alzheimer’s disease and other degenerative conditions.'
 },
 
@@ -154,6 +167,7 @@ export const brainStructures = [
   function: 'The lateral ventricles are fluid-filled cavities that produce and circulate cerebrospinal fluid (CSF). They cushion the brain, remove waste, and help maintain intracranial pressure.',
   networks: ['csf-system'],
   color: '#5DADE2',
+  difficulty: 'hard',
   clinicalSignificance: 'Enlargement can indicate hydrocephalus, brain atrophy, or developmental abnormalities. Ventricular asymmetry may be associated with neurological or psychiatric conditions.'
 },
 
@@ -165,6 +179,7 @@ export const brainStructures = [
     function: 'The pons (Latin for "bridge") connects the cerebral cortex with the cerebellum and medulla. It plays a crucial role in regulating breathing, sleep-wake cycles, bladder control, hearing, equilibrium, taste, eye movement, facial expressions, and posture. Contains nuclei for several cranial nerves and serves as a relay station for information traveling between different brain regions.',
     networks: ['autonomic', 'sleep-wake', 'sensory-motor'],
     color: '#95A5A6',
+    difficulty: 'easy',
     clinicalSignificance: 'Damage can cause breathing problems, sleep disorders, difficulty with eye movements, facial paralysis, or loss of sensation. Locked-in syndrome can result from pontine strokes.'
   },
   {
@@ -174,6 +189,7 @@ export const brainStructures = [
     function: 'The inferior olivary nucleus appears as an olive-shaped swelling on the medulla. It is a major source of input to the cerebellum and plays a crucial role in motor learning, timing of movements, and coordination. It helps the cerebellum learn and fine-tune motor skills through practice. Also involved in detecting timing errors during movement.',
     networks: ['motor-learning', 'cerebellar'],
     color: '#D35400',
+    difficulty: 'medium',
     clinicalSignificance: 'Damage can cause palatal myoclonus (rhythmic movements of the soft palate), difficulty with motor learning, and coordination problems. Lesions may produce distinctive tremors.'
   },
   {
@@ -183,6 +199,7 @@ export const brainStructures = [
   function: 'The spinal cord relays sensory information from the body to the brain and transmits motor commands from the brain to muscles. It also mediates reflexes and contains segmental circuits that coordinate basic motor patterns.',
   networks: ['sensorimotor', 'somatosensory', 'motor'],
   color: '#8E44AD',
+  difficulty: 'easy',
   clinicalSignificance: 'Damage to the spinal cord can cause loss of sensation, paralysis, autonomic dysfunction, and impaired reflexes below the level of injury.',
   },
   {
@@ -192,6 +209,7 @@ export const brainStructures = [
   function: 'The medullary pyramids contain the corticospinal tracts, which carry voluntary motor commands from the cerebral cortex to the spinal cord. These fibers control precise, skilled movements of the limbs and hands. At the lower end of the pyramids, most fibers cross to the opposite side in the pyramidal decussation, allowing each hemisphere to control the opposite side of the body.',
   networks: ['motor'],
   color: '#F1C40F',
+  difficulty: 'easy',
   clinicalSignificance: 'Damage to the pyramids or the corticospinal tract can cause weakness or paralysis on the opposite side of the body (contralateral hemiparesis), loss of fine motor control, and abnormal reflexes such as the Babinski sign.'
 },
 
@@ -203,6 +221,7 @@ export const brainStructures = [
     function: 'The optic nerve (cranial nerve II) transmits visual information from the retina to the brain. Each optic nerve contains about 1 million nerve fibers from retinal ganglion cells. It carries all visual input from one eye, converting light detected by photoreceptors into electrical signals that the brain can interpret. Despite being called a "nerve," it is technically part of the central nervous system.',
     networks: ['visual'],
     color: '#9B59B6',
+    difficulty: 'medium',
     clinicalSignificance: 'Damage causes vision loss in the affected eye. Conditions include optic neuritis (often in MS), glaucoma (increased pressure damaging the nerve), and optic nerve atrophy. Can be assessed by checking visual acuity and visual fields.'
   },
   {
@@ -212,6 +231,7 @@ export const brainStructures = [
     function: 'The optic chiasm is the X-shaped crossover point where the optic nerves from both eyes meet. Here, nerve fibers from the nasal (inner) half of each retina cross to the opposite side of the brain, while fibers from the temporal (outer) half stay on the same side. This arrangement allows each hemisphere of the brain to receive information from both eyes about the opposite visual field, enabling binocular vision and depth perception.',
     networks: ['visual'],
     color: '#8E44AD',
+    difficulty: 'medium',
     clinicalSignificance: 'Tumors (often pituitary) pressing on the chiasm cause bitemporal hemianopia (loss of peripheral vision in both eyes). Damage pattern depends on exact location of lesion.'
   },
   {
@@ -221,6 +241,7 @@ export const brainStructures = [
     function: 'The optic tract carries visual information from the optic chiasm to the brain. After the chiasm, fibers travel as the optic tract to several destinations: the lateral geniculate nucleus (LGN) of the thalamus (main visual pathway to cortex), the superior colliculus (eye movements and reflexes), and the pretectal area (pupillary light reflex). Each optic tract carries information from the opposite visual field from both eyes.',
     networks: ['visual'],
     color: '#6C3483',
+    difficulty: 'medium',
     clinicalSignificance: 'Damage causes homonymous hemianopia (loss of same side of visual field in both eyes). Right tract damage = left visual field loss in both eyes, and vice versa.'
   },
 
@@ -231,6 +252,7 @@ export const brainStructures = [
     function: 'The longitudinal fissure is the deep groove that separates the left and right cerebral hemispheres. It allows for the division of the brain into two distinct halves, each responsible for different functions. The corpus callosum, a thick band of nerve fibers, lies at the base of the fissure and facilitates communication between the hemispheres.',
     region: 'Sulci',
     color: '#9B59B6',
+    difficulty: 'easy',
   },
   {
   id: 'Anterior_Cingulate_1',
@@ -240,6 +262,7 @@ export const brainStructures = [
   function: 'The anterior cingulate cortex integrates emotion, attention, and decision-making. It helps regulate emotional responses, detect conflicts, evaluate errors, and modulate autonomic functions. It acts as a bridge between cognitive control and emotional processing.',
   networks: ['salience', 'executive-control', 'emotion'],
   color: '#FF6F61',
+  difficulty: 'hard',
   clinicalSignificance: 'Damage or dysfunction is associated with depression, anxiety disorders, ADHD, and impaired error monitoring or emotional regulation.'
 },
   {
@@ -248,6 +271,7 @@ export const brainStructures = [
     function: 'The lateral sulcus, also known as the Sylvian fissure, is a prominent groove that separates the frontal and parietal lobes from the temporal lobe. It is one of the most significant landmarks in the brain and contains important structures such as the insula. The lateral sulcus plays a crucial role in demarcating different functional areas of the brain.',
     region: 'Sulci',
     color: '#9B59B6',
+    difficulty: 'medium',
   },
   {
   id: 'Primary_Somatosensory_Cortex',
@@ -257,6 +281,7 @@ export const brainStructures = [
   function: 'The primary somatosensory cortex receives touch, pressure, pain, temperature, and proprioceptive information from the body. It contains a sensory homunculus that maps sensations from specific body regions.',
   networks: ['somatosensory'],
   color: '#F7B7A3',
+  difficulty: 'hard',
   clinicalSignificance: 'Damage can cause loss of tactile sensation, impaired spatial discrimination, difficulty recognizing objects by touch (astereognosis), and altered body awareness.'
 },
 {
@@ -267,6 +292,7 @@ export const brainStructures = [
   function: 'The primary motor cortex generates voluntary movement by sending motor commands to the spinal cord. It contains a somatotopic map (the motor homunculus) that controls precise movements of the face, hands, and body.',
   networks: ['motor'],
   color: '#FF8C42',
+  difficulty: 'hard',
   clinicalSignificance: 'Damage can cause weakness or paralysis on the opposite side of the body, loss of fine motor control, and abnormal reflexes. Stroke affecting M1 is a common cause of hemiparesis.'
 },
 {
@@ -276,6 +302,7 @@ export const brainStructures = [
   function: 'The medial prefrontal cortex supports self-referential thinking, decision-making, emotional regulation, and social cognition. It integrates internal states with long-term goals and helps evaluate the personal relevance of information.',
   networks: ['default-mode', 'executive-control'],
   color: '#E57373',
+  difficulty: 'hard',
   clinicalSignificance: 'Damage can impair emotional regulation, social judgment, and decision-making. Dysfunction is linked to depression, anxiety, and disorders involving impaired self-processing.'
 },
 {
@@ -286,6 +313,7 @@ export const brainStructures = [
   function: 'The orbitofrontal cortex evaluates rewards and punishments, guides flexible decision-making, and updates behavior based on changing outcomes. It plays a key role in emotion, value-based choices, and social behavior.',
   networks: ['reward', 'emotion', 'decision-making'],
   color: '#F4A261',
+  difficulty: 'hard',
   clinicalSignificance: 'Damage can cause impulsivity, poor judgment, emotional disinhibition, and difficulty adapting to changing reward contingencies. OFC dysfunction is associated with addiction and obsessive-compulsive disorder.'
 },
 {
@@ -295,6 +323,7 @@ export const brainStructures = [
   function: 'The ventromedial prefrontal cortex integrates emotional and memory-related information to guide moral reasoning, risk assessment, and value-based decision-making. It helps regulate fear responses and emotional learning.',
   networks: ['default-mode', 'emotion', 'reward'],
   color: '#D67AB1',
+  difficulty: 'hard',
   clinicalSignificance: 'Damage can lead to impaired emotional regulation, risky decision-making, and flattened affect. vmPFC dysfunction is linked to PTSD, anxiety disorders, and impaired fear extinction.'
 },
 {
@@ -305,6 +334,7 @@ export const brainStructures = [
   function: 'The olfactory bulb receives smell information from nasal receptors and performs early odor processing before sending signals to limbic and cortical regions. It is one of the only sensory systems that bypasses the thalamus.',
   networks: ['olfactory'],
   color: '#A3D977',
+  difficulty: 'medium',
   clinicalSignificance: 'Damage causes anosmia (loss of smell) and can affect taste and emotional memory. Early olfactory dysfunction is a hallmark of neurodegenerative diseases such as Parkinson’s and Alzheimer’s.'
 },
 {
@@ -329,6 +359,7 @@ export const brainStructures = [
   function: 'The prefrontal cortex supports executive functions including planning, reasoning, working memory, attention control, and decision-making. It integrates emotional, sensory, and motivational information to guide goal-directed behavior.',
   networks: ['executive-control', 'default-mode', 'attention'],
   color: '#FFB74D',
+  difficulty: 'medium',
   clinicalSignificance: 'Damage can impair judgment, planning, impulse control, and personality. Dysfunction is associated with ADHD, depression, schizophrenia, and traumatic brain injury.'
 },
 
@@ -340,6 +371,7 @@ export const brainStructures = [
   function: 'The cerebral peduncles contain major descending motor pathways that carry voluntary movement commands from the cerebral cortex to the brainstem and spinal cord. They also contain ascending sensory fibers and connections to the cerebellum.',
   networks: ['motor'],
   color: '#8ECAE6',
+  difficulty: 'medium',
   clinicalSignificance: 'Damage can cause weakness or paralysis, abnormal reflexes, and coordination deficits. Lesions often produce contralateral motor impairment due to crossing motor pathways.'
 },
 
@@ -350,6 +382,7 @@ export const brainStructures = [
   function: 'The medulla controls essential autonomic functions including breathing, heart rate, blood pressure, and reflexes such as swallowing, coughing, and vomiting. It serves as a major relay between the brain and spinal cord.',
   networks: ['autonomic'],
   color: '#A5D6A7',
+  difficulty: 'medium',
   clinicalSignificance: 'Damage can be life-threatening, causing respiratory failure, cardiovascular instability, or loss of basic reflexes. Stroke in the medulla can produce severe sensory and motor deficits.'
 },
 
@@ -361,6 +394,7 @@ export const brainStructures = [
   function: 'The pineal gland produces melatonin, regulating circadian rhythms and sleep–wake cycles. It responds to light–dark signals received indirectly through the visual system.',
   networks: ['endocrine'],
   color: '#CE93D8',
+  difficulty: 'hard',
   clinicalSignificance: 'Tumors or calcification can disrupt sleep, puberty timing, and hormonal balance. Pineal region masses may compress nearby midbrain structures.'
 },
 
@@ -372,6 +406,7 @@ export const brainStructures = [
   function: 'The pituitary gland is the master endocrine gland, releasing hormones that regulate growth, metabolism, stress responses, reproduction, and water balance. It receives regulatory signals from the hypothalamus.',
   networks: ['endocrine'],
   color: '#FFCC80',
+  difficulty: 'hard',
   clinicalSignificance: 'Pituitary tumors can cause hormonal imbalances, vision problems, or growth abnormalities. Disorders include Cushing’s disease, acromegaly, and hypopituitarism.'
 },
 {
@@ -382,18 +417,19 @@ export const brainStructures = [
   function: 'The hypothalamus regulates essential homeostatic functions including hunger, thirst, temperature, circadian rhythms, stress responses, and hormone release. It links the nervous system to the endocrine system through its control of the pituitary gland.',
   networks: ['endocrine', 'autonomic', 'emotion'],
   color: '#FFAB91',
+  difficulty: 'medium',
   clinicalSignificance: 'Damage can disrupt temperature regulation, appetite, sleep, stress responses, and hormonal balance. Hypothalamic dysfunction is associated with endocrine disorders, obesity, insomnia, and autonomic instability.'
 },
 
 
 {
-  id: 'Posterior_Commissure1',
+  id: 'Posterior_Commisure1',
   name: 'Posterior Commissure',
   region: 'Diencephalon',
-  relatedStructures: ['Pineal_Gland', 'Superior_Colliculus'],
   function: 'The posterior commissure is a small but important fiber tract that connects the two sides of the midbrain. It plays a key role in coordinating eye movements and pupillary light reflexes.',
   networks: ['visual', 'oculomotor'],
   color: '#81D4FA',
+  difficulty: 'hard',
   clinicalSignificance: 'Damage can impair vertical eye movements and pupillary reflexes. Lesions in this region are associated with Parinaud’s syndrome.'
 },
 {
@@ -403,6 +439,7 @@ export const brainStructures = [
   function: 'The posterior cingulate cortex is a major hub of the default mode network, supporting internally directed thought, autobiographical memory, spatial orientation, and evaluation of personal relevance. It integrates memory, emotion, and self-referential processing.',
   networks: ['default-mode'],
   color: '#B39DDB',
+  difficulty: 'hard',
   clinicalSignificance: 'Reduced PCC activity is one of the earliest markers of Alzheimer’s disease. Damage or dysfunction can impair memory retrieval, attention, and self-awareness. Abnormal PCC connectivity is linked to depression, PTSD, and disorders of consciousness.'
 },
 {
@@ -411,7 +448,8 @@ export const brainStructures = [
   region: 'Frontal Lobe',
   function: 'A vertical sulcus located just anterior to the precentral gyrus, marking the boundary between the premotor cortex and the primary motor cortex.',
   networks: [],
-  color: '#AED581'
+  color: '#AED581',
+  difficulty: 'medium',
 },
 
 {
@@ -422,6 +460,7 @@ export const brainStructures = [
   function: 'The corpus callosum is the largest white matter tract in the brain, connecting the left and right cerebral hemispheres. It enables rapid communication between the hemispheres, allowing integration of sensory information, motor commands, and higher cognitive functions.',
   networks: ['interhemispheric', 'executive-control'],
   color: '#A3CEF1',
+  difficulty: 'medium',
   clinicalSignificance: 'Damage can cause split-brain symptoms, impaired coordination between the two sides of the body, and deficits in language, attention, or problem-solving. It is often affected in multiple sclerosis and traumatic brain injury.'
 },
 ];

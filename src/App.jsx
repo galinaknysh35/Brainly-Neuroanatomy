@@ -4,7 +4,7 @@ import MRIUploader from './components/MRI/MRIUploader';
 import InfoPanel from './components/UI/InfoPanel';
 import NetworkSelector from './components/UI/NetworkSelector';
 import SearchBar from './components/UI/SearchBar';
-import handleSickSalmon from './components/sicksalmon';
+import QuizPanel from './components/Quiz/QuizPanel';
 import './App.css';
 
 function App() {
@@ -19,12 +19,24 @@ function App() {
   const [mriMesh, setMriMesh] = useState(null);
   const [showMRIUpload, setShowMRIUpload] = useState(false);
 
-  // Brain model state - 'full' or 'midsagittal'
+  // Brain model state
   const [brainModel, setBrainModel] = useState('full');
+
+  // Quiz state
+  const [quizClickHandler, setQuizClickHandler] = useState(null);
 
   // ===================== HANDLERS =====================
   const handleStructureSelect = (structure) => {
     console.log('📱 App - handleStructureSelect:', structure);
+    
+    // If quiz is active, let quiz handle the click
+    if (activeView === 'quiz' && quizClickHandler) {
+      console.log('📝 Quiz is active - routing click to quiz handler');
+      quizClickHandler(structure);
+      return;
+    }
+
+    // Otherwise, handle as normal selection
     setSelectedStructure(structure);
     setActiveView('info');
   };
@@ -51,6 +63,11 @@ function App() {
     setBrainModel(newModel);
   };
 
+  const handleQuizClickCallback = (clickHandler) => {
+    console.log('📝 Quiz click handler registered');
+    setQuizClickHandler(() => clickHandler);
+  };
+
   useEffect(() => {
     console.log('📱 App - selectedStructure changed:', selectedStructure);
   }, [selectedStructure]);
@@ -67,11 +84,11 @@ function App() {
             <h1 className="logo-text">Brainly</h1>
           </div>
           <p className="tagline">
-            Interactive 3D Brain Atlas for Neuroscience Students
+            Interactive 3D Brain Model for Students
           </p>
         </div>
 
-        {/* Brain Model Toggle Button */}
+        {/* Header Controls */}
         <div className="header-controls">
           <button
             onClick={handleBrainModelToggle}
@@ -81,7 +98,6 @@ function App() {
             {brainModel === 'full' ? '↔️ Midsagittal' : '🧠 Full Brain'}
           </button>
 
-          {/* MRI Upload Button */}
           <button
             onClick={() => setShowMRIUpload(true)}
             className="mri-upload-btn"
@@ -151,13 +167,6 @@ function App() {
               Click on different parts to learn about their functions!
             </div>
           </div>
-
-          <div className="sidebar-section">
-            <h3 className="sidebar-title">Learning Tip</h3>
-            <div className="tip-box">
-              💡 Start by exploring major lobes, then dive into specific structures.
-            </div>
-          </div>
         </aside>
 
         {/* CENTER - 3D Visualization */}
@@ -186,6 +195,13 @@ function App() {
             >
               Networks
             </button>
+            <button
+              className={`view-tab ${activeView === 'quiz' ? 'active' : ''}`}
+              onClick={() => handleViewChange('quiz')}
+              title="Test your knowledge"
+            >
+              📝 Quiz
+            </button>
           </div>
 
           <div className="view-content">
@@ -194,11 +210,13 @@ function App() {
                 selectedStructure={selectedStructure}
                 onClose={() => setSelectedStructure(null)}
               />
-            ) : (
+            ) : activeView === 'networks' ? (
               <NetworkSelector
                 activeNetwork={activeNetwork}
                 onNetworkSelect={handleNetworkSelect}
               />
+            ) : (
+              <QuizPanel onStructureClick={handleQuizClickCallback} />
             )}
           </div>
         </aside>

@@ -33,10 +33,44 @@ function BrainModel({
 
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
+  
+  // Track mouse movement to detect drag vs click
+  const mouseDownPos = useRef({ x: 0, y: 0 });
+  const dragThreshold = 5; // pixels - if mouse moves more than this, it's a drag
 
-  // CLICK HANDLER
+  // CLICK HANDLER - Only fires on actual clicks, not drag endings
   useEffect(() => {
-    const handleClick = (event) => {
+    let isMouseDown = false;
+
+    const handleMouseDown = (event) => {
+      isMouseDown = true;
+      mouseDownPos.current = {
+        x: event.clientX,
+        y: event.clientY
+      };
+    };
+
+    const handleMouseUp = (event) => {
+      if (!isMouseDown) return;
+      isMouseDown = false;
+
+      // Calculate how far the mouse moved
+      const deltaX = Math.abs(event.clientX - mouseDownPos.current.x);
+      const deltaY = Math.abs(event.clientY - mouseDownPos.current.y);
+      const totalDelta = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+      // If mouse moved too much, it was a drag, not a click
+      if (totalDelta > dragThreshold) {
+        console.log('🖱️ Detected drag (distance:', totalDelta, 'px), ignoring click');
+        return;
+      }
+
+      // Only process as a click if movement was minimal
+      console.log('🖱️ Valid click detected (distance:', totalDelta, 'px)');
+      processClick(event);
+    };
+
+    const processClick = (event) => {
       const rect = gl.domElement.getBoundingClientRect();
       mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -78,8 +112,13 @@ function BrainModel({
       }
     };
 
-    gl.domElement.addEventListener('click', handleClick);
-    return () => gl.domElement.removeEventListener('click', handleClick);
+    gl.domElement.addEventListener('mousedown', handleMouseDown);
+    gl.domElement.addEventListener('mouseup', handleMouseUp);
+    
+    return () => {
+      gl.domElement.removeEventListener('mousedown', handleMouseDown);
+      gl.domElement.removeEventListener('mouseup', handleMouseUp);
+    };
   }, [camera, gl, onStructureClick]);
 
   // Initial pink color setup

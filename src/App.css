@@ -353,10 +353,12 @@ body {
   border-bottom: 2px solid var(--color-gray-100);
   background: white;
   flex-shrink: 0;
+  overflow-x: auto;
 }
 
 .view-tab {
   flex: 1;
+  min-width: fit-content;
   padding: var(--spacing-md);
   border: none;
   background: transparent;
@@ -367,6 +369,7 @@ body {
   cursor: pointer;
   transition: all var(--transition-speed);
   position: relative;
+  white-space: nowrap;
 }
 
 .view-tab:hover {
