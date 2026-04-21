@@ -1,7 +1,7 @@
 import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, Environment, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
-import { useEffect, useRef, Suspense } from 'react';
+import { useEffect, useRef, Suspense, useMemo } from 'react';
 import MRIMesh from '../MRI/MRIMesh';
 import { brainStructures, getStructureById } from '../../data/brainData';
 
@@ -10,14 +10,23 @@ function BrainModel({
   highlightedStructures, 
   onStructureClick, 
   networkColor,
-  brainModel = 'full' // 'full' or 'midsagittal'
+  brainModel = 'full'
 }) {
   // Load both models
-  const { scene: fullBrainScene } = useGLTF('/models/brain8.glb');
+  const { scene: fullBrainScene } = useGLTF('/models/brain.blend .glb');
   const { scene: midsagittalScene } = useGLTF('/models/mid.brain.glb');
   
   // Use the appropriate scene based on brainModel prop
-  const scene = brainModel === 'midsagittal' ? midsagittalScene : fullBrainScene;
+  const sourceScene = brainModel === 'midsagittal' ? midsagittalScene : fullBrainScene;
+  
+  // Clone only when source scene changes, memoized
+  const clonedScene = useMemo(() => {
+    if (sourceScene) {
+      console.log('🔄 Cloning scene for:', brainModel);
+      return sourceScene.clone(true);
+    }
+    return null;
+  }, [sourceScene, brainModel]);
   
   const brainRef = useRef();
   const { camera, gl } = useThree();
@@ -104,7 +113,8 @@ function BrainModel({
       ? selectedStructure?.id 
       : selectedStructure;
 
-    if (!selectedId) {
+    if (!selectedId && highlightedStructures.length === 0) {
+      // No selection and no highlights - reset to pink
       brainRef.current.traverse((child) => {
         if (child.isMesh) {
           if (!child.material.userData.originalMaterial) {
@@ -184,14 +194,18 @@ function BrainModel({
 
   const modelScale = brainModel === 'midsagittal' ? 128 : 1.5;
 
+  // Don't render if scene isn't ready
+  if (!clonedScene) {
+    return null;
+  }
+
   return (
-  <primitive
-    ref={brainRef}
-    object={scene.clone(true)}   // ← deep clone so models don’t share memory
-    scale={modelScale}
-    rotation={[0, Math.PI / 2, 0]}
-    key={brainModel}             // ← forces R3F to re-mount when switching
-  />
+    <primitive
+      ref={brainRef}
+      object={clonedScene}
+      scale={modelScale}
+      rotation={[0, Math.PI / 2, 0]}
+    />
   );
 }
   
@@ -212,7 +226,7 @@ const Scene = ({
   onStructureClick,
   networkColor,
   mriMesh,
-  brainModel = 'full' // Add this prop
+  brainModel = 'full'
 }) => {
   console.log('🎬 Scene - mriMesh:', mriMesh);
   console.log('🎬 Brain model:', brainModel);
@@ -269,5 +283,5 @@ const Scene = ({
 export default Scene;
 
 // Preload both models
-useGLTF.preload('/models/brain8.glb');
+useGLTF.preload('/models/brain.blend .glb');
 useGLTF.preload('/models/mid.brain.glb');

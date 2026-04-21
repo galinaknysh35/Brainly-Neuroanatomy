@@ -13,96 +13,89 @@
  */
 
 export const functionalNetworks = [
+
   {
     id: 'default-mode',
     name: 'Default Mode Network (DMN)',
-    description: 'Active during rest and internal thought. Involved in self-referential thinking, memory retrieval, imagining the future, and theory of mind. Deactivates during goal-directed tasks.',
+    description: 'Active during rest and internal thought. Supports self-referential thinking, autobiographical memory, and internal mentation. Deactivates during goal-directed tasks.',
     structures: [
-      'prefrontal-cortex',
-      'posterior-cingulate',
-      'hippocampus'
+      'Medial_Prefrontal_Cortex',
+      'Posterior_Cingulate_Cortex'
     ],
     color: '#2ECC71',
     discoveredBy: 'Marcus Raichle et al., 2001',
-    clinicalRelevance: 'Disrupted in Alzheimer\'s disease, depression, and ADHD'
-  },
-  {
-    id: 'executive-control',
-    name: 'Executive Control Network',
-    description: 'Controls goal-directed behavior, working memory, decision-making, and cognitive control. Essential for planning and problem-solving.',
-    structures: [
-      'prefrontal-cortex',
-      'posterior-parietal',
-      'anterior-cingulate',
-      'basal-ganglia'
-    ],
-    color: '#3498DB',
-    discoveredBy: 'Multiple researchers, formalized in 1990s-2000s',
-    clinicalRelevance: 'Impaired in schizophrenia, ADHD, and addiction'
-  },
-  {
-    id: 'salience',
-    name: 'Salience Network',
-    description: 'Detects and filters important stimuli from the environment. Switches between default mode and executive control networks. Processes emotional significance.',
-    structures: [
-      'Anterior_Cingulate_1',
-      'insula',
-      'amygdala'
-    ],
-    color: '#E91E63',
-    discoveredBy: 'William Seeley and Vinod Menon, 2007',
-    clinicalRelevance: 'Dysfunctional in anxiety disorders, PTSD, and autism'
-  },
-  {
-    id: 'motor',
-    name: 'Motor Network',
-    description: 'Controls voluntary movement, motor planning, and coordination. Includes cortical and subcortical motor regions.',
-    structures: [
-      'Primary_Motor_Cortex',
-      'Premotor_Cortex',
-      'Basal_Ganglia',
-      'Corpus_Cerebelli'
-    ],
-    color: '#E74C3C',
-    discoveredBy: 'Classical neuroanatomy, refined with modern imaging',
-    clinicalRelevance: 'Affected in Parkinson\'s disease, Huntington\'s disease, stroke'
+    clinicalRelevance: 'Disrupted in Alzheimer’s disease, depression, and ADHD.'
   },
 
   {
-  id: 'somatosensory',
-  name: 'Somatosensory Network',
-  description: 'Processes touch, pressure, pain, temperature, vibration, and body position (proprioception) from the entire body.',
-  structures: [
-    'Primary_Somatosensory_Cortex',
-    'Somatosensory_Association_Cortex',
-    'Thalamus_1'
-  ],
-  color: '#3bf312',
-  discoveredBy: 'Classical sensory neuroscience and cortical mapping studies',
-  clinicalRelevance: 'Damage causes sensory loss, impaired body awareness, difficulty localizing touch, or chronic pain syndromes.'
-},
-  {
-    id: 'visual',
-    name: 'Visual Network',
-    description: 'Processes visual information from the eyes. Includes primary visual cortex and higher visual association areas.',
+    id: 'somatosensory',
+    name: 'Somatosensory Network',
+    description: 'Processes touch, pressure, pain, temperature, vibration, and body position (proprioception).',
     structures: [
-      'visual-cortex'
+      'Primary_Somatosensory_Cortex',
+      'Somatosensory_Association_Cortex',
+      'Thalamus_1'
+    ],
+    color: '#F39C12',
+    discoveredBy: 'Classical sensory neuroscience and cortical mapping studies',
+    clinicalRelevance: 'Damage causes sensory loss, impaired body awareness, or chronic pain syndromes.'
+  },
+
+  {
+    id: 'autonomic',
+    name: 'Autonomic Network',
+    description: 'Regulates essential involuntary functions including heart rate, breathing, digestion, temperature, and stress responses.',
+    structures: [
+      'Hypothalamus1',
+      'Medulla_',
+      'Pons',
+
+    ],
+    color: '#E74C3C',
+    discoveredBy: 'Early physiological and neuroendocrine research',
+    clinicalRelevance: 'Dysfunction leads to instability in blood pressure, breathing, temperature, and hormonal balance.'
+  },
+
+  {
+    id: 'endocrine',
+    name: 'Endocrine Network',
+    description: 'Coordinates hormonal regulation of growth, metabolism, stress, reproduction, and circadian rhythms.',
+    structures: [
+      'Hypothalamus1',
+      'Pituitary_Gland_1',
+      'Pineal_Gland'
+    ],
+    color: '#9B59B6',
+    discoveredBy: 'Classical neuroendocrinology',
+    clinicalRelevance: 'Disruption causes hormonal imbalance, sleep disorders, infertility, and metabolic dysfunction.'
+  },
+
+  {
+    id: 'olfactory',
+    name: 'Olfactory Network',
+    description: 'Processes odor information and links smell to memory, emotion, and survival behaviors.',
+    structures: [
+      'Olfactory_Bulb'
+    ],
+    color: '#27AE60',
+    discoveredBy: 'Early sensory physiology',
+    clinicalRelevance: 'Loss of smell is an early sign of neurodegenerative diseases such as Parkinson’s and Alzheimer’s.'
+  },
+
+  {
+    id: 'motor',
+    name: 'Motor Network',
+    description: 'Controls voluntary movement, motor planning, and descending motor commands to the spinal cord.',
+    structures: [
+      'Primary_Motor_Cortex',
+      'Cerebral_Peduncel',
+      'Corpus_Cerebelli'
     ],
     color: '#3498DB',
-    discoveredBy: 'Classical vision neuroscience',
-    clinicalRelevance: 'Damage causes blindness or visual field defects'
+    discoveredBy: 'Classical motor physiology and cortical stimulation studies',
+    clinicalRelevance: 'Damage causes weakness, paralysis, or impaired motor coordination.'
   },
-  {
-    id: 'auditory',
-    name: 'Auditory Network',
-    description: 'Processes sound and auditory information. Essential for hearing and speech perception.',
-    structures: [
-      'auditory-cortex'
-    ],
-    color: '#1ABC9C',
-    discoveredBy: 'Classical auditory neuroscience',
-    clinicalRelevance: 'Damage causes hearing loss or auditory processing disorders'
-  },
+
   {
     id: 'language',
     name: 'Language Network',
@@ -127,40 +120,7 @@ export const functionalNetworks = [
     discoveredBy: 'Formalized by Corbetta and Shulman, 2002',
     clinicalRelevance: 'Impaired in ADHD, neglect syndrome'
   },
-  {
-    id: 'memory',
-    name: 'Memory Network',
-    description: 'Forms and retrieves episodic memories. Critical for learning and long-term memory.',
-    structures: [
-      'hippocampus'
-    ],
-    color: '#27AE60',
-    discoveredBy: 'Identified through patient H.M. studies (Brenda Milner, 1957)',
-    clinicalRelevance: 'Damaged in Alzheimer\'s disease, amnesia'
-  },
-  {
-    id: 'emotion',
-    name: 'Emotion Network',
-    description: 'Processes emotional responses, particularly fear and threat detection.',
-    structures: [
-      'amygdala'
-    ],
-    color: '#C0392B',
-    discoveredBy: 'Joseph LeDoux and others, 1990s',
-    clinicalRelevance: 'Hyperactive in anxiety disorders, PTSD'
-  },
-  {
-    id: 'autonomic',
-    name: 'Autonomic Network',
-    description: 'Controls automatic body functions: breathing, heart rate, digestion, temperature regulation.',
-    structures: [
-      'hypothalamus',
-      'brainstem'
-    ],
-    color: '#95A5A6',
-    discoveredBy: 'Classical autonomic neuroscience',
-    clinicalRelevance: 'Critical for survival; damage can be fatal'
-  }
+  
 ];
 
 /**

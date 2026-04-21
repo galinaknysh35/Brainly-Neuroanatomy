@@ -8,7 +8,7 @@ export const brainStructures = [
     id: 'Frontal_Lobe',
     name: 'Frontal Lobe',
     region: 'Cerebrum',
-    relatedStructures: ["Brocas_Area"],
+    relatedStructures: ["Brocas_Area", "Prefrontal_Cortex", "Primary_Motor_Cortex", "Medial_Prefrontal_Cortex", "Orbitofrontal_Cortex", "Ventromedial_Prefrontal_Cortex"],
     function: 'The frontal lobe is responsible for executive functions including reasoning, planning, problem-solving, decision-making, and controlling behavior and emotions. It contains the primary motor cortex (controlling voluntary movement) and areas critical for speech production (Broca\'s area). This lobe is what makes humans capable of complex thought, personality expression, and voluntary movement control.',
     networks: ['executive-control', 'motor', 'language'],
     color: '#4A90E2',
@@ -18,13 +18,14 @@ export const brainStructures = [
     id: 'Parietal_Lobe',
     name: 'Parietal Lobe',
     region: 'Cerebrum',
+    relatedStructures: ["Primary_Somatosensory_Cortex"],
     function: 'The parietal lobe processes sensory information from the body including touch, temperature, pain, and spatial awareness. It contains the primary somatosensory cortex and is crucial for integrating sensory input with motor output. This lobe helps you understand where your body is in space and process mathematical and spatial reasoning.',
     networks: ['sensory', 'attention', 'spatial'],
     color: '#E67E22',
     clinicalSignificance: 'Damage can cause difficulty with spatial awareness, problems with reading or math, or neglect syndrome (ignoring one side of space).'
   },
   {
-    id: 'Temporal_Lobe',
+    id: 'Temporal_Lobe_1',
     name: 'Temporal Lobe',
     region: 'Cerebrum',
     relatedStructures: ["Wernickes_Area"],
@@ -268,6 +269,151 @@ export const brainStructures = [
   color: '#FF8C42',
   clinicalSignificance: 'Damage can cause weakness or paralysis on the opposite side of the body, loss of fine motor control, and abnormal reflexes. Stroke affecting M1 is a common cause of hemiparesis.'
 },
+{
+  id: 'Medial_Prefrontal_Cortex',
+  name: 'Medial Prefrontal Cortex (mPFC)',
+  region: 'Frontal Lobe',
+  function: 'The medial prefrontal cortex supports self-referential thinking, decision-making, emotional regulation, and social cognition. It integrates internal states with long-term goals and helps evaluate the personal relevance of information.',
+  networks: ['default-mode', 'executive-control'],
+  color: '#E57373',
+  clinicalSignificance: 'Damage can impair emotional regulation, social judgment, and decision-making. Dysfunction is linked to depression, anxiety, and disorders involving impaired self-processing.'
+},
+{
+  id: 'Orbitofrontal_Cortex',
+  name: 'Orbitofrontal Cortex (OFC)',
+  region: 'Frontal Lobe',
+  relatedStructures: ['Amygdala'],
+  function: 'The orbitofrontal cortex evaluates rewards and punishments, guides flexible decision-making, and updates behavior based on changing outcomes. It plays a key role in emotion, value-based choices, and social behavior.',
+  networks: ['reward', 'emotion', 'decision-making'],
+  color: '#F4A261',
+  clinicalSignificance: 'Damage can cause impulsivity, poor judgment, emotional disinhibition, and difficulty adapting to changing reward contingencies. OFC dysfunction is associated with addiction and obsessive-compulsive disorder.'
+},
+{
+  id: 'Ventromedial_Prefrontal_Cortex',
+  name: 'Ventromedial Prefrontal Cortex (vmPFC)',
+  region: 'Frontal Lobe',
+  function: 'The ventromedial prefrontal cortex integrates emotional and memory-related information to guide moral reasoning, risk assessment, and value-based decision-making. It helps regulate fear responses and emotional learning.',
+  networks: ['default-mode', 'emotion', 'reward'],
+  color: '#D67AB1',
+  clinicalSignificance: 'Damage can lead to impaired emotional regulation, risky decision-making, and flattened affect. vmPFC dysfunction is linked to PTSD, anxiety disorders, and impaired fear extinction.'
+},
+{
+  id: 'Olfactory_Bulb',
+  name: 'Olfactory Bulb',
+  region: 'Forebrain',
+  relatedStructures: ['Olfactory_Tract', 'Piriform_Cortex'],
+  function: 'The olfactory bulb receives smell information from nasal receptors and performs early odor processing before sending signals to limbic and cortical regions. It is one of the only sensory systems that bypasses the thalamus.',
+  networks: ['olfactory'],
+  color: '#A3D977',
+  clinicalSignificance: 'Damage causes anosmia (loss of smell) and can affect taste and emotional memory. Early olfactory dysfunction is a hallmark of neurodegenerative diseases such as Parkinson’s and Alzheimer’s.'
+},
+{
+  id: 'Central_Sulcus',
+  name: 'Central Sulcus',
+  region: 'Cerebrum',
+  
+  function: 'The central sulcus is a major landmark separating the frontal and parietal lobes. It divides the primary motor cortex (precentral gyrus) from the primary somatosensory cortex (postcentral gyrus), marking the boundary between motor output and sensory input.',
+  networks: ['motor', 'somatosensory'],
+  color: '#90CAF9',
+},
+
+{
+  id: 'Prefrontal_Cortex',
+  name: 'Prefrontal Cortex',
+  region: 'Frontal Lobe',
+  relatedStructures: [
+    'Medial_Prefrontal_Cortex',
+    'Orbitofrontal_Cortex',
+    'Dorsolateral_Prefrontal_Cortex'
+  ],
+  function: 'The prefrontal cortex supports executive functions including planning, reasoning, working memory, attention control, and decision-making. It integrates emotional, sensory, and motivational information to guide goal-directed behavior.',
+  networks: ['executive-control', 'default-mode', 'attention'],
+  color: '#FFB74D',
+  clinicalSignificance: 'Damage can impair judgment, planning, impulse control, and personality. Dysfunction is associated with ADHD, depression, schizophrenia, and traumatic brain injury.'
+},
+
+{
+  id: 'Cerebral_Peduncel',
+  name: 'Cerebral Peduncle',
+  region: 'Midbrain',
+  relatedStructures: ['Motor_Cortex'],
+  function: 'The cerebral peduncles contain major descending motor pathways that carry voluntary movement commands from the cerebral cortex to the brainstem and spinal cord. They also contain ascending sensory fibers and connections to the cerebellum.',
+  networks: ['motor'],
+  color: '#8ECAE6',
+  clinicalSignificance: 'Damage can cause weakness or paralysis, abnormal reflexes, and coordination deficits. Lesions often produce contralateral motor impairment due to crossing motor pathways.'
+},
+
+{
+  id: 'Medulla_',
+  name: 'Medulla Oblongata',
+  region: 'Brainstem',
+  function: 'The medulla controls essential autonomic functions including breathing, heart rate, blood pressure, and reflexes such as swallowing, coughing, and vomiting. It serves as a major relay between the brain and spinal cord.',
+  networks: ['autonomic'],
+  color: '#A5D6A7',
+  clinicalSignificance: 'Damage can be life-threatening, causing respiratory failure, cardiovascular instability, or loss of basic reflexes. Stroke in the medulla can produce severe sensory and motor deficits.'
+},
+
+{
+  id: 'Pineal_Gland',
+  name: 'Pineal Gland',
+  region: 'Diencephalon',
+  relatedStructures: ['Thalamus', 'Hypothalamus'],
+  function: 'The pineal gland produces melatonin, regulating circadian rhythms and sleep–wake cycles. It responds to light–dark signals received indirectly through the visual system.',
+  networks: ['endocrine'],
+  color: '#CE93D8',
+  clinicalSignificance: 'Tumors or calcification can disrupt sleep, puberty timing, and hormonal balance. Pineal region masses may compress nearby midbrain structures.'
+},
+
+{
+  id: 'Pituitary_Gland_1',
+  name: 'Pituitary Gland',
+  region: 'Endocrine System',
+  relatedStructures: ['Hypothalamus'],
+  function: 'The pituitary gland is the master endocrine gland, releasing hormones that regulate growth, metabolism, stress responses, reproduction, and water balance. It receives regulatory signals from the hypothalamus.',
+  networks: ['endocrine'],
+  color: '#FFCC80',
+  clinicalSignificance: 'Pituitary tumors can cause hormonal imbalances, vision problems, or growth abnormalities. Disorders include Cushing’s disease, acromegaly, and hypopituitarism.'
+},
+{
+  id: 'Hypothalamus1',
+  name: 'Hypothalamus',
+  region: 'Diencephalon',
+  relatedStructures: ['Pituitary_Gland', 'Thalamus', 'Amygdala'],
+  function: 'The hypothalamus regulates essential homeostatic functions including hunger, thirst, temperature, circadian rhythms, stress responses, and hormone release. It links the nervous system to the endocrine system through its control of the pituitary gland.',
+  networks: ['endocrine', 'autonomic', 'emotion'],
+  color: '#FFAB91',
+  clinicalSignificance: 'Damage can disrupt temperature regulation, appetite, sleep, stress responses, and hormonal balance. Hypothalamic dysfunction is associated with endocrine disorders, obesity, insomnia, and autonomic instability.'
+},
+
+
+{
+  id: 'Posterior_Commissure1',
+  name: 'Posterior Commissure',
+  region: 'Diencephalon',
+  relatedStructures: ['Pineal_Gland', 'Superior_Colliculus'],
+  function: 'The posterior commissure is a small but important fiber tract that connects the two sides of the midbrain. It plays a key role in coordinating eye movements and pupillary light reflexes.',
+  networks: ['visual', 'oculomotor'],
+  color: '#81D4FA',
+  clinicalSignificance: 'Damage can impair vertical eye movements and pupillary reflexes. Lesions in this region are associated with Parinaud’s syndrome.'
+},
+{
+  id: 'Posterior_Cingulate_Cortex',
+  name: 'Posterior Cingulate Cortex (PCC)',
+  region: 'Cingulate Cortex / Limbic System',
+  function: 'The posterior cingulate cortex is a major hub of the default mode network, supporting internally directed thought, autobiographical memory, spatial orientation, and evaluation of personal relevance. It integrates memory, emotion, and self-referential processing.',
+  networks: ['default-mode'],
+  color: '#B39DDB',
+  clinicalSignificance: 'Reduced PCC activity is one of the earliest markers of Alzheimer’s disease. Damage or dysfunction can impair memory retrieval, attention, and self-awareness. Abnormal PCC connectivity is linked to depression, PTSD, and disorders of consciousness.'
+},
+{
+  id: 'Precentral_Sulcus',
+  name: 'Precentral Sulcus',
+  region: 'Frontal Lobe',
+  function: 'A vertical sulcus located just anterior to the precentral gyrus, marking the boundary between the premotor cortex and the primary motor cortex.',
+  networks: [],
+  color: '#AED581'
+},
+
 {
   id: 'Corpus_Callosum_1',
   name: 'Corpus Callosum',
